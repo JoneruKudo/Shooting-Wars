@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
 
     public GameObject bulletImpactVFX;
     public GameObject muzzleFlashVFX;
-    public Transform muzzlePoint;
+    public Transform localMuzzlePoint;
+    public Transform networkMuzzlePoint;
 
     public Animator playerAnim;
 
@@ -94,8 +95,11 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
-        playerAnim.SetFloat("Position X", moveDirection.x);
-        playerAnim.SetFloat("Position Y", moveDirection.z);
+        if (playerAnim.isActiveAndEnabled)
+        {
+            playerAnim.SetFloat("Position X", moveDirection.x);
+            playerAnim.SetFloat("Position Y", moveDirection.z);
+        }
 
         yVelocity += Physics.gravity.y * Time.deltaTime * gravityMultiplier;
 
@@ -104,7 +108,11 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             yVelocity = 0f;
-            playerAnim.SetBool("isGrounded", isGrounded);
+
+            if (playerAnim.isActiveAndEnabled)
+            {
+                playerAnim.SetBool("isGrounded", isGrounded);
+            }
         }
 
         movement = (transform.forward * moveDirection.z) + (transform.right * moveDirection.x);
@@ -114,14 +122,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             movement.y = jumpHeight;
-            playerAnim.SetBool("isGrounded", false);
+
+            if (playerAnim.isActiveAndEnabled)
+            {
+                playerAnim.SetBool("isGrounded", false);
+            }
         }
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
     }
     private void Shoot()
     {
-        Instantiate(muzzleFlashVFX, muzzlePoint);
+        Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
 
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = mainCam.transform.position;
