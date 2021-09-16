@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
     public float verticalAngleLimit = 60f;
     private float verticalRotationVariable;
+    private Camera mainCam;
 
     public float movementSpeed = 5f;
     private Vector3 moveDirection, movement;
@@ -23,10 +24,18 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     private bool isGrounded;
 
+    public GameObject bulletImpactVFX;
+    public GameObject muzzleFlashVFX;
+    public Transform muzzlePoint;
+
+    public Animator playerAnim;
+
     private void Start()
     {
         Camera.main.transform.position = camPosition.position;
         Camera.main.transform.rotation = camPosition.rotation;
+
+        mainCam = Camera.main;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -36,6 +45,11 @@ public class PlayerController : MonoBehaviour
         MouseInputHandler();
 
         MovementHandler();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
     }
 
     private void LateUpdate()
@@ -60,6 +74,18 @@ public class PlayerController : MonoBehaviour
             -verticalRotationVariable,
             camPosition.rotation.eulerAngles.y,
             camPosition.rotation.eulerAngles.z);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if (Cursor.lockState == CursorLockMode.None)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
     }
 
     private void MovementHandler()
@@ -68,6 +94,9 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
+        playerAnim.SetFloat("Position X", moveDirection.x);
+        playerAnim.SetFloat("Position Y", moveDirection.z);
+
         yVelocity += Physics.gravity.y * Time.deltaTime * gravityMultiplier;
 
         isGrounded = Physics.Raycast(groundPoint.position, Vector3.down, 0.3f, groundLayer);
@@ -75,6 +104,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             yVelocity = 0f;
+            playerAnim.SetBool("isGrounded", isGrounded);
         }
 
         movement = (transform.forward * moveDirection.z) + (transform.right * moveDirection.x);
@@ -84,10 +114,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             movement.y = jumpHeight;
+            playerAnim.SetBool("isGrounded", false);
         }
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
     }
+    private void Shoot()
+    {
+        Instantiate(muzzleFlashVFX, muzzlePoint);
 
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        ray.origin = mainCam.transform.position;
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+        }
+    }
 
 }

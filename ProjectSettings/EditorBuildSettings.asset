@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/FPMobileControl/Example/Scenes/Demo.unity
+    guid: 0b9bcd368c264eb45b81240cdbcd07db
   m_configObjects: {}

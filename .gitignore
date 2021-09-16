@@ -70,3 +70,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Assets/Asset Packs/
+Assets/FPMobileControl/
+Assets/Materials/FPS UI pack/UI/UIMainMenu/Rubik-Medium.ttf.meta
+Assets/Materials/FPS UI pack/
