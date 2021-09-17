@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public Gun[] guns;
     private int selectedGunIndex;
     private float weaponCooldownTime = Mathf.Infinity;
+    Coroutine firingCo;
 
     private void Start()
     {
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
         mainCam = Camera.main;
 
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         EquipWeapon(0);
     }
@@ -53,14 +54,14 @@ public class PlayerController : MonoBehaviour
 
         MovementHandler();
 
-        if (Input.GetMouseButton(0))
-        {
-            if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
-            {
-                weaponCooldownTime = 0;
-                Shoot();
-            }
-        }
+        //if (Input.GetMouseButton(0))
+        //{
+        //    if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
+        //    {
+        //        weaponCooldownTime = 0;
+        //        Shoot();
+        //    }
+        //}
 
         ChangeWeaponHandler();
 
@@ -90,17 +91,17 @@ public class PlayerController : MonoBehaviour
             camPosition.rotation.eulerAngles.y,
             camPosition.rotation.eulerAngles.z);
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else if (Cursor.lockState == CursorLockMode.None)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    Cursor.lockState = CursorLockMode.None;
+        //}
+        //else if (Cursor.lockState == CursorLockMode.None)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        Cursor.lockState = CursorLockMode.Locked;
+        //    }
+        //}
     }
 
     private void MovementHandler()
@@ -145,16 +146,37 @@ public class PlayerController : MonoBehaviour
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
     }
-    private void Shoot()
+    public void StartShooting()
     {
-        Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
+        if (guns[selectedGunIndex].timeBetweenShots > weaponCooldownTime) return;
 
-        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        ray.origin = mainCam.transform.position;
+        weaponCooldownTime = 0;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
+        firingCo = StartCoroutine(KeepShooting());
+    }
+
+    public void StopShooting()
+    {
+        StopCoroutine(firingCo);
+    }
+
+    private IEnumerator KeepShooting()
+    {
+        while(true)
         {
-            Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+            Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
+
+            Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            ray.origin = mainCam.transform.position;
+
+            if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
+            {
+                Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+            }
+
+            yield return new WaitForSecondsRealtime(guns[selectedGunIndex].timeBetweenShots);
+
+            weaponCooldownTime = 0;
         }
     }
 
