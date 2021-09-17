@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Transform camPosition;
-    public float mouseSensitivity = 1f;
+    public float mouseSensitivity = 50f;
     private Vector2 mouseInput;
     public float verticalAngleLimit = 60f;
     private float verticalRotationVariable;
@@ -70,13 +70,15 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        Camera.main.transform.position = camPosition.position;
-        Camera.main.transform.rotation = camPosition.rotation;
+        mainCam.transform.position = camPosition.position;
+        mainCam.transform.rotation = camPosition.rotation;
     }
 
     private void MouseInputHandler()
     {
-        mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
+        //mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
+
+        mouseInput = bl_TouchPad.GetInputSmooth();
 
         transform.rotation = Quaternion.Euler(
             transform.rotation.eulerAngles.x,
@@ -108,7 +110,9 @@ public class PlayerController : MonoBehaviour
     {
         float yVelocity = movement.y;
 
-        moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        //moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+
+        moveDirection = new Vector3(bl_MovementJoystick.Instance.Horizontal, 0, bl_MovementJoystick.Instance.Vertical);
 
         if (playerAnim.isActiveAndEnabled)
         {
@@ -145,8 +149,6 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         if (!isGrounded) return;
-
-        Debug.Log("jump");
 
         movement.y = jumpHeight;
 
