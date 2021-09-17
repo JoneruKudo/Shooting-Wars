@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
 
     public Animator playerAnim;
 
+    public Gun[] guns;
+    private int selectedGunIndex;
+
     private void Start()
     {
         Camera.main.transform.position = camPosition.position;
@@ -39,6 +42,8 @@ public class PlayerController : MonoBehaviour
         mainCam = Camera.main;
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        EquipWeapon(0);
     }
 
     private void Update()
@@ -51,6 +56,8 @@ public class PlayerController : MonoBehaviour
         {
             Shoot();
         }
+
+        ChangeWeaponHandler();
     }
 
     private void LateUpdate()
@@ -141,6 +148,51 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+        }
+    }
+
+    private void EquipWeapon(int gunIndex)
+    {
+        selectedGunIndex = gunIndex;
+
+        foreach(Gun gun in guns)
+        {
+            gun.gameObject.SetActive(false);
+        }
+
+        guns[selectedGunIndex].gameObject.SetActive(true);
+    }
+
+    private void ChangeWeaponHandler()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            selectedGunIndex += 1;
+
+            if (guns.Length > selectedGunIndex)
+            {
+                EquipWeapon(selectedGunIndex);
+            }
+            else
+            {
+                selectedGunIndex = 0;
+                EquipWeapon(selectedGunIndex);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            selectedGunIndex -= 1;
+
+            if (selectedGunIndex >= 0)
+            {
+                EquipWeapon(selectedGunIndex);
+            }
+            else
+            {
+                selectedGunIndex = guns.Length - 1;
+                EquipWeapon(selectedGunIndex);
+            }
         }
     }
 
