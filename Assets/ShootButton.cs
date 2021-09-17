@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class MyButton : bl_MobileButton
+public class ShootButton : bl_MobileButton
 {
     public PlayerController playerCon;
 

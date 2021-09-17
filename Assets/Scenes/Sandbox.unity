@@ -1530,8 +1530,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mobile Control [Dark] 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 846478485}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319480733338923664, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1317835416912030843, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
+    - {fileID: 7544955109964656820, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f8cff23128e42094e8da5f8c8af1ec3b, type: 3}
 --- !u!1 &1357372010 stripped
 GameObject:

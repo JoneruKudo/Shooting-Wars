@@ -136,16 +136,28 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            movement.y = jumpHeight;
-
-            if (playerAnim.isActiveAndEnabled)
-            {
-                playerAnim.SetBool("isGrounded", false);
-            }
+            Jump();
         }
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
     }
+
+    public void Jump()
+    {
+        if (!isGrounded) return;
+
+        Debug.Log("jump");
+
+        movement.y = jumpHeight;
+
+        if (playerAnim.isActiveAndEnabled)
+        {
+            playerAnim.SetBool("isGrounded", false);
+        }
+
+        charController.Move(movement * movementSpeed * Time.deltaTime);
+    }
+
     public void StartShooting()
     {
         if (guns[selectedGunIndex].timeBetweenShots > weaponCooldownTime) return;
