@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public Gun[] guns;
     private int selectedGunIndex;
+    private float weaponCooldownTime = Mathf.Infinity;
 
     private void Start()
     {
@@ -52,12 +53,18 @@ public class PlayerController : MonoBehaviour
 
         MovementHandler();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            Shoot();
+            if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
+            {
+                weaponCooldownTime = 0;
+                Shoot();
+            }
         }
 
         ChangeWeaponHandler();
+
+        weaponCooldownTime += Time.deltaTime;
     }
 
     private void LateUpdate()
@@ -145,7 +152,7 @@ public class PlayerController : MonoBehaviour
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = mainCam.transform.position;
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
         {
             Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
         }
