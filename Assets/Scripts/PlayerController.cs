@@ -43,9 +43,11 @@ public class PlayerController : MonoBehaviour
 
         mainCam = Camera.main;
 
-        //Cursor.lockState = CursorLockMode.Locked;
-
         EquipWeapon(0);
+
+#if UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.Locked;
+#endif
     }
 
     private void Update()
@@ -54,14 +56,16 @@ public class PlayerController : MonoBehaviour
 
         MovementHandler();
 
-        //if (Input.GetMouseButton(0))
-        //{
-        //    if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
-        //    {
-        //        weaponCooldownTime = 0;
-        //        Shoot();
-        //    }
-        //}
+#if UNITY_EDITOR
+        if (Input.GetMouseButton(0))
+        {
+            if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
+            {
+                weaponCooldownTime = 0;
+                Shoot();
+            }
+        }
+#endif
 
         ChangeWeaponHandler();
 
@@ -76,9 +80,23 @@ public class PlayerController : MonoBehaviour
 
     private void MouseInputHandler()
     {
-        //mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
-
         mouseInput = bl_TouchPad.GetInputSmooth();
+
+#if UNITY_EDITOR
+        mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if (Cursor.lockState == CursorLockMode.None)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+#endif
 
         transform.rotation = Quaternion.Euler(
             transform.rotation.eulerAngles.x,
@@ -93,17 +111,6 @@ public class PlayerController : MonoBehaviour
             camPosition.rotation.eulerAngles.y,
             camPosition.rotation.eulerAngles.z);
 
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Cursor.lockState = CursorLockMode.None;
-        //}
-        //else if (Cursor.lockState == CursorLockMode.None)
-        //{
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        Cursor.lockState = CursorLockMode.Locked;
-        //    }
-        //}
     }
 
     private void MovementHandler()
@@ -172,6 +179,21 @@ public class PlayerController : MonoBehaviour
     public void StopShooting()
     {
         StopCoroutine(firingCo);
+    }
+
+    private void Shoot()
+    {
+        Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
+
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        ray.origin = mainCam.transform.position;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
+        {
+            Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+        }
+
+        weaponCooldownTime = 0;
     }
 
     private IEnumerator KeepShooting()

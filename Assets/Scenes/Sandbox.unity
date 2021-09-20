@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camPosition: {fileID: 2021726229}
-  mouseSensitivity: 50
+  mouseSensitivity: 7.5
   verticalAngleLimit: 60
   movementSpeed: 5
   charController: {fileID: 846478487}
