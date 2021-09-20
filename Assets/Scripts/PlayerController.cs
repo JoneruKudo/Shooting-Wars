@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool activateUnityEditorControls = false;
+
     public Transform camPosition;
     public float mouseSensitivity = 50f;
     private Vector2 mouseInput;
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
         mainCam = Camera.main;
 
         EquipWeapon(0);
+        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(0);
 
 #if UNITY_EDITOR
         Cursor.lockState = CursorLockMode.Locked;
@@ -56,7 +59,12 @@ public class PlayerController : MonoBehaviour
 
         MovementHandler();
 
+        weaponCooldownTime += Time.deltaTime;
+
 #if UNITY_EDITOR
+
+        if (activateUnityEditorControls == false) return;
+
         if (Input.GetMouseButton(0))
         {
             if (guns[selectedGunIndex].timeBetweenShots < weaponCooldownTime)
@@ -67,9 +75,6 @@ public class PlayerController : MonoBehaviour
         }
 #endif
 
-        ChangeWeaponHandler();
-
-        weaponCooldownTime += Time.deltaTime;
     }
 
     private void LateUpdate()
@@ -83,6 +88,8 @@ public class PlayerController : MonoBehaviour
         mouseInput = bl_TouchPad.GetInputSmooth();
 
 #if UNITY_EDITOR
+        if (activateUnityEditorControls == false) return;
+
         mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * mouseSensitivity;
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -228,37 +235,30 @@ public class PlayerController : MonoBehaviour
         guns[selectedGunIndex].gameObject.SetActive(true);
     }
 
-    private void ChangeWeaponHandler()
+    public void SwitchWeaponOnRight()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            selectedGunIndex += 1;
+        selectedGunIndex += 1;
 
-            if (guns.Length > selectedGunIndex)
-            {
-                EquipWeapon(selectedGunIndex);
-            }
-            else
-            {
-                selectedGunIndex = 0;
-                EquipWeapon(selectedGunIndex);
-            }
+        if (selectedGunIndex > guns.Length - 1)
+        {
+            selectedGunIndex = 0;
+        }
+  
+        EquipWeapon(selectedGunIndex);
+        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+    }
+
+    public void SwitchWeaponOnLeft()
+    {
+        selectedGunIndex -= 1;
+
+        if (selectedGunIndex < 0)
+        {
+            selectedGunIndex = guns.Length - 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            selectedGunIndex -= 1;
-
-            if (selectedGunIndex >= 0)
-            {
-                EquipWeapon(selectedGunIndex);
-            }
-            else
-            {
-                selectedGunIndex = guns.Length - 1;
-                EquipWeapon(selectedGunIndex);
-            }
-        }
+        EquipWeapon(selectedGunIndex);
+        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
     }
 
 }
