@@ -6,11 +6,16 @@ using UnityEngine.EventSystems;
 
 public class ShootButton : bl_MobileButton
 {
-    public PlayerController playerCon;
+    private PlayerController playerCon;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
+
+        if (playerCon == null)
+        {
+            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        }
 
         playerCon.StartShooting();
     }
@@ -18,6 +23,11 @@ public class ShootButton : bl_MobileButton
     public override void OnPointerUp(PointerEventData eventData)
     {
         base.OnPointerUp(eventData);
+
+        if (playerCon == null)
+        {
+            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        }
 
         playerCon.StopShooting();
     }

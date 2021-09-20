@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform groundPoint;
     public LayerMask groundLayer;
-    private bool isGrounded;
+    public bool isGrounded;
 
     public GameObject bulletImpactVFX;
     public GameObject muzzleFlashVFX;

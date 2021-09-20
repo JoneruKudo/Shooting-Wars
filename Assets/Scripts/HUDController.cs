@@ -5,5 +5,11 @@ using TMPro;
 using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
-{ 
+{
+    public static HUDController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 }
