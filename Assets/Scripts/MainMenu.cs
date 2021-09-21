@@ -19,16 +19,22 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public TMP_Text loadingText;
 
     public GameObject createRoomScreen;
-    public TMP_InputField roomNameInputField;
+    public TMP_InputField createRoomNameInputField;
 
     public GameObject lobbyScreen;
     public TMP_Text lobbyRoomNameText;
     public TMP_Text[] playerNames;
 
+    public GameObject findRoomScreen;
+    public TMP_InputField findRoomNameInputField;
+
+    public GameObject errorScreen;
+    public TMP_Text errorText;
+
 
     private void Start()
     {
-        PhotonNetwork.NickName = "junnelPogi";
+        PhotonNetwork.NickName = "Player " + Random.Range(1, 1000);
 
         CloseAllScreen();
 
@@ -50,6 +56,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         loadingScreen.SetActive(false);
         createRoomScreen.SetActive(false);
         lobbyScreen.SetActive(false);
+        findRoomScreen.SetActive(false);
+        errorScreen.SetActive(false);
     }
 
     public override void OnConnectedToMaster()
@@ -79,9 +87,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(roomNameInputField.text)) return;
+        if (string.IsNullOrEmpty(createRoomNameInputField.text)) return;
 
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+        PhotonNetwork.CreateRoom(createRoomNameInputField.text);
     }
 
     public void LeaveRoom()
@@ -99,23 +107,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
-        var playerList = PhotonNetwork.PlayerList;
-
-        int playerIndex = 0;
-
-        foreach(var player in playerList)
-        {
-            playerNames[playerIndex].text = player.NickName;
-            playerNames[playerIndex].fontStyle = FontStyles.Bold;
-            playerNames[playerIndex].color = new Color(255f, 255f, 255, 255f);
-
-            playerIndex++;
-
-            if(playerIndex >= playerList.Length)
-            {
-                playerIndex = playerList.Length - 1;
-            }
-        }
+        UpdatePlayersNameInLobby();
     }
 
     public override void OnLeftRoom()
@@ -130,6 +122,102 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void TestRoom()
     {
-        PhotonNetwork.CreateRoom("TestRoom");
+        PhotonNetwork.CreateRoom("test");
     }
+
+    public void JoinRoom()
+    {
+        if (string.IsNullOrEmpty(findRoomNameInputField.text)) return;
+
+        PhotonNetwork.JoinRoom(findRoomNameInputField.text);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        CloseAllScreen();
+
+        lobbyScreen.SetActive(true);
+
+        lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
+
+        UpdatePlayersNameInLobby();
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        UpdatePlayersNameInLobby();
+    }
+
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        UpdatePlayersNameInLobby();
+    }
+
+    private void UpdatePlayersNameInLobby()
+    {
+        var playerList = PhotonNetwork.PlayerList;
+
+        int playerIndex = 0;
+
+        foreach (var player in playerList)
+        {
+            if (player.IsLocal)
+            {
+                playerNames[playerIndex].color = new Color(0f, 255f, 17f, 255f);
+            }
+            else
+            {
+                playerNames[playerIndex].color = new Color(255f, 255f, 255, 255f);
+            }
+
+            playerNames[playerIndex].text = player.NickName;
+            playerNames[playerIndex].fontStyle = FontStyles.Bold;
+
+            playerIndex++;
+
+            if (playerIndex >= playerList.Length)
+            {
+                playerIndex = playerList.Length - 1;
+            }
+        }
+
+        for (int i = playerIndex + 1; i < playerNames.Length; i++)
+        {
+            playerNames[i].text = "player slot " + (i + 1);
+            playerNames[i].fontStyle = FontStyles.Italic;
+            playerNames[i].color = new Color(255f, 255f, 255, 60f);
+        }
+
+    }
+
+    public void FindRoom()
+    {
+        CloseAllScreen();
+
+        findRoomScreen.SetActive(true);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        CloseAllScreen();
+
+        errorScreen.SetActive(true);
+
+        errorText.text = "Failed To Join A Room: " + message;
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        CloseAllScreen();
+
+        errorScreen.SetActive(true);
+
+        errorText.text = "Failed To Create A Room : " + message;
+    }
+
+    public void CloseErrorScreen()
+    {
+        ReturnToMainMenu();
+    }
+
 }
