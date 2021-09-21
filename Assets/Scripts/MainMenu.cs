@@ -90,6 +90,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(createRoomNameInputField.text)) return;
 
         PhotonNetwork.CreateRoom(createRoomNameInputField.text);
+
+        CloseAllScreen();
+
+        loadingScreen.SetActive(true);
+
+        loadingText.text = "Creating a room...";
     }
 
     public void LeaveRoom()
@@ -97,6 +103,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.InRoom) return;
 
         PhotonNetwork.LeaveRoom();
+
+        CloseAllScreen();
+
+        loadingScreen.SetActive(true);
+
+        loadingText.text = "Leaving room...";
     }
 
     public override void OnCreatedRoom()
