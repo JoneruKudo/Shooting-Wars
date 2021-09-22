@@ -37,6 +37,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public GameObject errorScreen;
     public TMP_Text errorText;
 
+    public string mapNameToLoad;
+
     public TMP_Text[] playerNames;
 
     private void Start()
@@ -72,6 +74,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
 
         loadingText.text = "Joining Lobby...";
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnJoinedLobby()
@@ -136,7 +140,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        Debug.Log("Game starting...");
+        PhotonNetwork.LoadLevel(mapNameToLoad);
     }
 
     public void TestRoom()

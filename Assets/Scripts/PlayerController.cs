@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     public bool activateUnityEditorControls = false;
 
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour
     private float weaponCooldownTime = Mathf.Infinity;
     Coroutine firingCo;
 
+    public GameObject playerBodyOverNetwork;
+    public GameObject playerBodyLocal;
+
     private void Start()
     {
         Camera.main.transform.position = camPosition.position;
@@ -46,7 +50,19 @@ public class PlayerController : MonoBehaviour
         mainCam = Camera.main;
 
         EquipWeapon(0);
+
         WeaponSwitcher.instance.UpdateSlotSwitcherInfo(0);
+
+        if (photonView.IsMine)
+        {
+            playerBodyLocal.SetActive(true);
+            playerBodyOverNetwork.SetActive(false);
+        }
+        else
+        {
+            playerBodyLocal.SetActive(false);
+            playerBodyOverNetwork.SetActive(true);
+        }
 
 #if UNITY_EDITOR
         Cursor.lockState = CursorLockMode.Locked;
@@ -55,6 +71,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!photonView.IsMine) return;
+
         MouseInputHandler();
 
         MovementHandler();
@@ -79,6 +97,8 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!photonView.IsMine) return;
+
         mainCam.transform.position = camPosition.position;
         mainCam.transform.rotation = camPosition.rotation;
     }
@@ -128,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector3(bl_MovementJoystick.Instance.Horizontal, 0, bl_MovementJoystick.Instance.Vertical);
 
-        if (playerAnim.isActiveAndEnabled)
+        if (true)
         {
             playerAnim.SetFloat("Position X", moveDirection.x);
             playerAnim.SetFloat("Position Y", moveDirection.z);
@@ -142,7 +162,7 @@ public class PlayerController : MonoBehaviour
         {
             yVelocity = 0f;
 
-            if (playerAnim.isActiveAndEnabled)
+            if (true)
             {
                 playerAnim.SetBool("isGrounded", isGrounded);
             }
@@ -166,7 +186,7 @@ public class PlayerController : MonoBehaviour
 
         movement.y = jumpHeight;
 
-        if (playerAnim.isActiveAndEnabled)
+        if (true)
         {
             playerAnim.SetBool("isGrounded", false);
         }
@@ -190,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
+        Instantiate(muzzleFlashVFX, true ? networkMuzzlePoint : localMuzzlePoint);
 
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = mainCam.transform.position;
@@ -207,7 +227,7 @@ public class PlayerController : MonoBehaviour
     {
         while(true)
         {
-            Instantiate(muzzleFlashVFX, playerAnim.isActiveAndEnabled ? networkMuzzlePoint : localMuzzlePoint);
+            Instantiate(muzzleFlashVFX, true ? networkMuzzlePoint : localMuzzlePoint);
 
             Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             ray.origin = mainCam.transform.position;

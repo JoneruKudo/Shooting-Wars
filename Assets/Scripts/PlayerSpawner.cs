@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class PlayerSpawner : MonoBehaviour
     int spawnIndex;
 
     public static PlayerSpawner instance;
+    private GameObject player;
 
     private void Awake()
     {
@@ -17,18 +20,19 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnPlayer();        
+        if (PhotonNetwork.IsConnected)
+        {
+            SpawnPlayer();
+        }
     }
 
     private void SpawnPlayer()
     {
         spawnIndex = Random.Range(0, spawnPoints.Length);
 
-        GameObject playerInstance = Instantiate(
-            playerPrefab,
-            spawnPoints[spawnIndex].position,
+        player = PhotonNetwork.Instantiate(
+            playerPrefab.name, 
+            spawnPoints[spawnIndex].position, 
             spawnPoints[spawnIndex].rotation);
     }
-
-
 }
