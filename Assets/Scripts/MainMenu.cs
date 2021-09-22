@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviourPunCallbacks
 {
@@ -23,14 +25,19 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public GameObject lobbyScreen;
     public TMP_Text lobbyRoomNameText;
-    public TMP_Text[] playerNames;
 
     public GameObject findRoomScreen;
-    public TMP_InputField findRoomNameInputField;
+    public GameObject roomFoundObject;
+    public GameObject joinButton;
+    private string selectedButtonRoomName;
+    private List<RoomButton> roomButtons = new List<RoomButton>();
+
+    public GameObject startGameButton;
 
     public GameObject errorScreen;
     public TMP_Text errorText;
 
+    public TMP_Text[] playerNames;
 
     private void Start()
     {
@@ -139,9 +146,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        if (string.IsNullOrEmpty(findRoomNameInputField.text)) return;
-
-        PhotonNetwork.JoinRoom(findRoomNameInputField.text);
+        PhotonNetwork.JoinRoom(selectedButtonRoomName);
     }
 
     public override void OnJoinedRoom()
@@ -155,12 +160,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         UpdatePlayersNameInLobby();
     }
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         UpdatePlayersNameInLobby();
     }
 
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayersNameInLobby();
     }
@@ -180,6 +185,15 @@ public class MainMenu : MonoBehaviourPunCallbacks
             else
             {
                 playerNames[playerIndex].color = new Color(255f, 255f, 255, 255f);
+            }
+
+            if (player.IsMasterClient)
+            {
+                startGameButton.SetActive(true);
+            }
+            else
+            {
+                startGameButton.SetActive(false);
             }
 
             playerNames[playerIndex].text = player.NickName;
@@ -207,6 +221,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         CloseAllScreen();
 
         findRoomScreen.SetActive(true);
+
+        joinButton.GetComponent<Button>().interactable = false;
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -232,4 +248,38 @@ public class MainMenu : MonoBehaviourPunCallbacks
         ReturnToMainMenu();
     }
 
+    public void SelectRoom(RoomButton roomButton)
+    {
+        selectedButtonRoomName = roomButton.GetComponentInChildren<TMP_Text>().text;
+
+        if (string.IsNullOrEmpty(selectedButtonRoomName)) return;
+
+        joinButton.GetComponent<Button>().interactable = true;
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+       foreach(RoomButton roomButton in roomButtons)
+        {
+            Destroy(roomButton.gameObject);
+        }
+
+        roomButtons.Clear();
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (!roomList[i].RemovedFromList)
+            {
+                GameObject roomFoundInstance = Instantiate(roomFoundObject, roomFoundObject.transform.parent);
+                roomFoundInstance.GetComponentInChildren<TMP_Text>().text = roomList[i].Name;
+                roomFoundInstance.SetActive(true);
+                roomButtons.Add(roomFoundInstance.GetComponent<RoomButton>());
+            }
+        }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
