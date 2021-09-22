@@ -157,6 +157,15 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            startGameButton.SetActive(true);
+        }
+        else
+        {
+            startGameButton.SetActive(false);
+        }
+
         UpdatePlayersNameInLobby();
     }
 
@@ -171,7 +180,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     }
 
     private void UpdatePlayersNameInLobby()
-    {
+    { 
         var playerList = PhotonNetwork.PlayerList;
 
         int playerIndex = 0;
@@ -185,15 +194,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
             else
             {
                 playerNames[playerIndex].color = new Color(255f, 255f, 255, 255f);
-            }
-
-            if (player.IsMasterClient)
-            {
-                startGameButton.SetActive(true);
-            }
-            else
-            {
-                startGameButton.SetActive(false);
             }
 
             playerNames[playerIndex].text = player.NickName;
@@ -214,6 +214,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
             playerNames[i].color = new Color(255f, 255f, 255, 60f);
         }
 
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            startGameButton.SetActive(true);
+        }
+        else
+        {
+            startGameButton.SetActive(false);
+        }
     }
 
     public void FindRoom()
