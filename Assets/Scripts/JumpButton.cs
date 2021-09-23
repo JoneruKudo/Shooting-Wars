@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class JumpButton : bl_MobileButton
 {
-    private PlayerController playerCon;
+    PlayerController playerCon = null;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -13,7 +14,7 @@ public class JumpButton : bl_MobileButton
 
         if (playerCon == null)
         {
-            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerCon = HUDController.instance.GetPlayerController();
         }
 
         playerCon.Jump();

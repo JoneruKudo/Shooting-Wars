@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class WeaponSwitchButtonRight : bl_MobileButton
 {
-    private PlayerController playerCon;
+    PlayerController playerCon = null;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -13,7 +13,7 @@ public class WeaponSwitchButtonRight : bl_MobileButton
 
         if (playerCon == null)
         {
-            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerCon = HUDController.instance.GetPlayerController();
         }
 
         playerCon.SwitchWeaponOnRight();

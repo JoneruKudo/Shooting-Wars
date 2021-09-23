@@ -2,18 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSwitcher : bl_SlotSwitcher
+public class WeaponSwitcherUI : bl_SlotSwitcher
 {
-    public static WeaponSwitcher instance;
+    public static WeaponSwitcherUI instance;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-        UpdateSlotSwitcherInfo(0);
     }
 
     public void UpdateSlotSwitcherInfo(int slotIndex)

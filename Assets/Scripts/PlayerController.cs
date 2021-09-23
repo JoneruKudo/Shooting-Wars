@@ -45,6 +45,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public GameObject playerBodyOverNetwork;
     public GameObject playerBodyLocal;
 
+    public static PlayerController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         currentHealthPoints = maxHealthPoints;
@@ -56,7 +63,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         EquipWeapon(0);
 
-        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(0);
+        WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(0);
 
         if (photonView.IsMine)
         {
@@ -85,6 +92,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
         weaponCooldownTime += Time.deltaTime;
 
 #if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            PlayerSpawner.instance.PlayerDie();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SwitchWeaponOnLeft();
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SwitchWeaponOnRight();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            activateUnityEditorControls = !activateUnityEditorControls;
+        }
 
         if (activateUnityEditorControls == false) return;
 
@@ -189,6 +215,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (!isGrounded) return;
 
+
         movement.y = jumpHeight;
 
         if (true)
@@ -197,9 +224,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
+
+
     }
 
-    private void Shoot()
+    private void Shoot() // using mouse
     {    
         GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
             networkMuzzlePoint.position,
@@ -233,7 +262,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         weaponCooldownTime = 0;
     }
 
-    private IEnumerator KeepShooting()
+    private IEnumerator KeepShooting() // using UI buttons
     {
         while(true)
         {
@@ -307,7 +336,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
   
         EquipWeapon(selectedGunIndex);
-        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+        WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
     }
 
     public void SwitchWeaponOnLeft()
@@ -320,7 +349,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         EquipWeapon(selectedGunIndex);
-        WeaponSwitcher.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+        WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
     }
 
     [PunRPC]

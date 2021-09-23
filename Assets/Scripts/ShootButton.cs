@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class ShootButton : bl_MobileButton
 {
-    private PlayerController playerCon;
+    PlayerController playerCon = null;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -14,7 +15,7 @@ public class ShootButton : bl_MobileButton
 
         if (playerCon == null)
         {
-            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerCon = HUDController.instance.GetPlayerController();
         }
 
         playerCon.StartShooting();
@@ -26,7 +27,7 @@ public class ShootButton : bl_MobileButton
 
         if (playerCon == null)
         {
-            playerCon = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerCon = HUDController.instance.GetPlayerController();
         }
 
         playerCon.StopShooting();
