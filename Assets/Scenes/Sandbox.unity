@@ -923,6 +923,7 @@ MonoBehaviour:
   - {fileID: 499732330}
   - {fileID: 1140753285}
   playerPrefab: {fileID: 5336235246039129480, guid: 76d167535a5a6bf4bab7e5655b6e9f63, type: 3}
+  timeToRespawn: 3
 --- !u!1 &642591548
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class PlayerSpawner : MonoBehaviour
     public static PlayerSpawner instance;
     private GameObject player;
 
+    public float timeToRespawn;
+
     private void Awake()
     {
         instance = this;
@@ -34,5 +36,19 @@ public class PlayerSpawner : MonoBehaviour
             playerPrefab.name, 
             spawnPoints[spawnIndex].position, 
             spawnPoints[spawnIndex].rotation);
+    }
+
+    public void PlayerDie()
+    {
+        StartCoroutine(DieCo());
+    }
+
+    private IEnumerator DieCo()
+    {
+        PhotonNetwork.Destroy(player);
+
+        yield return new WaitForSecondsRealtime(timeToRespawn);
+
+        SpawnPlayer();
     }
 }

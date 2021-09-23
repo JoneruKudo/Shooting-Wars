@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {
     public bool activateUnityEditorControls = false;
 
+    public int maxHealthPoints;
+    private int currentHealthPoints;
+
     public Transform camPosition;
     public float mouseSensitivity = 50f;
     private Vector2 mouseInput;
@@ -44,6 +47,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        currentHealthPoints = maxHealthPoints;
+
         Camera.main.transform.position = camPosition.position;
         Camera.main.transform.rotation = camPosition.rotation;
 
@@ -194,20 +199,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         charController.Move(movement * movementSpeed * Time.deltaTime);
     }
 
-    public void StartShooting()
-    {
-        if (guns[selectedGunIndex].timeBetweenShots > weaponCooldownTime) return;
-
-        weaponCooldownTime = 0;
-
-        firingCo = StartCoroutine(KeepShooting());
-    }
-
-    public void StopShooting()
-    {
-        StopCoroutine(firingCo);
-    }
-
     private void Shoot()
     {    
         GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
@@ -229,6 +220,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 hit.point + (hit.normal * 0.003f),
                 Quaternion.LookRotation(hit.normal,
                 Vector3.up));
+
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                hit.collider.GetComponent<PhotonView>().RPC("DealDamage",
+                    RpcTarget.All,
+                    photonView.Owner.NickName,
+                    guns[selectedGunIndex].damage);
+            }
         }
 
         weaponCooldownTime = 0;
@@ -257,12 +256,33 @@ public class PlayerController : MonoBehaviourPunCallbacks
                                hit.point + (hit.normal * 0.003f),
                                Quaternion.LookRotation(hit.normal,
                                Vector3.up));
-            }
 
+                if (hit.collider.gameObject.tag == "Player")
+                {
+                    hit.collider.GetComponent<PhotonView>().RPC("DealDamage",
+                        RpcTarget.All,
+                        photonView.Owner.NickName,
+                        guns[selectedGunIndex].damage);
+                }
+            }
             yield return new WaitForSecondsRealtime(guns[selectedGunIndex].timeBetweenShots);
 
             weaponCooldownTime = 0;
         }
+    }
+
+    public void StartShooting()
+    {
+        if (guns[selectedGunIndex].timeBetweenShots > weaponCooldownTime) return;
+
+        weaponCooldownTime = 0;
+
+        firingCo = StartCoroutine(KeepShooting());
+    }
+
+    public void StopShooting()
+    {
+        StopCoroutine(firingCo);
     }
 
     private void EquipWeapon(int gunIndex)
@@ -301,6 +321,27 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         EquipWeapon(selectedGunIndex);
         WeaponSwitcher.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+    }
+
+    [PunRPC]
+    public void DealDamage(string damager, int damage)
+    {
+        TakeDamage(damager, damage);
+    }
+
+    private void TakeDamage(string damager, int damage)
+    {
+        if (!photonView.IsMine) return;
+
+        currentHealthPoints -= damage;
+
+        if (currentHealthPoints <= 0)
+        {
+            currentHealthPoints = 0;
+            PlayerSpawner.instance.PlayerDie();
+        }
+
+        Debug.Log(photonView.Owner.NickName + " health: " + currentHealthPoints);
     }
 
 }
