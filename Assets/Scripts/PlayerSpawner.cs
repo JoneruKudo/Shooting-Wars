@@ -45,6 +45,8 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator DieCo()
     {
+        yield return new WaitForSecondsRealtime(3f);
+
         PhotonNetwork.Destroy(player);
 
         yield return new WaitForSecondsRealtime(timeToRespawn);

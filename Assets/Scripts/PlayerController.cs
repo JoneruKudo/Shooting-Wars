@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public int maxHealthPoints;
     private int currentHealthPoints;
+    public bool isDead = false;
 
     public Transform camPosition;
     public float mouseSensitivity = 50f;
@@ -69,6 +70,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             playerBodyLocal.SetActive(true);
             playerBodyOverNetwork.SetActive(false);
+
+            HUDController.instance.healthText.text = currentHealthPoints.ToString();
         }
         else
         {
@@ -215,21 +218,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (!isGrounded) return;
 
-
         movement.y = jumpHeight;
 
-        if (true)
-        {
-            playerAnim.SetBool("isGrounded", false);
-        }
+        playerAnim.SetBool("isGrounded", false);
 
         charController.Move(movement * movementSpeed * Time.deltaTime);
-
-
     }
 
     private void Shoot() // using mouse
-    {    
+    {
         GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
             networkMuzzlePoint.position,
             networkMuzzlePoint.rotation);
@@ -264,7 +261,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private IEnumerator KeepShooting() // using UI buttons
     {
-        while(true)
+        while (true)
         {
             GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
                 networkMuzzlePoint.position,
@@ -318,7 +315,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         selectedGunIndex = gunIndex;
 
-        foreach(Gun gun in guns)
+        foreach (Gun gun in guns)
         {
             gun.gameObject.SetActive(false);
         }
@@ -334,7 +331,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             selectedGunIndex = 0;
         }
-  
+
         EquipWeapon(selectedGunIndex);
         WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
     }
@@ -362,17 +359,32 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine) return;
 
+        if (isDead) return;
+
         currentHealthPoints -= damage;
 
         if (currentHealthPoints <= 0)
         {
             currentHealthPoints = 0;
+
+            isDead = true;
+
+            photonView.RPC("DieHandler", RpcTarget.All);
+
             PlayerSpawner.instance.PlayerDie();
         }
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();
 
         Debug.Log(photonView.Owner.NickName + " health: " + currentHealthPoints);
+    }
+    
+    [PunRPC]
+    public void DieHandler()
+    {
+        if (photonView.IsMine) return;
+
+        playerAnim.SetTrigger("Dead");
     }
 
 }

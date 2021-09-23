@@ -429,6 +429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activateUnityEditorControls: 1
   maxHealthPoints: 100
+  isDead: 0
   camPosition: {fileID: 5336235247226976521}
   mouseSensitivity: 7.5
   verticalAngleLimit: 60
