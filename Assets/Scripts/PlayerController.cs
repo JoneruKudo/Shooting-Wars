@@ -370,6 +370,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             PlayerSpawner.instance.PlayerDie();
         }
 
+        HUDController.instance.healthText.text = currentHealthPoints.ToString();
+
         Debug.Log(photonView.Owner.NickName + " health: " + currentHealthPoints);
     }
 

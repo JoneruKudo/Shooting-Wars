@@ -14,6 +14,8 @@ public class HUDController : MonoBehaviour
         instance = this;
     }
 
+    public TMP_Text healthText;
+
     public PlayerController GetPlayerController()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
