@@ -14,7 +14,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
         instance = this;
     }
 
-    public GameObject testButton;
+    public bool isTestingMode = false;
+    public GameObject testButtons;
+    private bool isQuickStart = false;
 
     public GameObject mainMenuScreen;
     public GameObject loadingScreen;
@@ -53,9 +55,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         PhotonNetwork.ConnectUsingSettings();
 
-#if UNITY_EDITOR
-        testButton.SetActive(true);
-#endif
+        testButtons.SetActive(isTestingMode ? true : false);
 
     }
 
@@ -131,6 +131,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
         UpdatePlayersNameInLobby();
+
+        if (isTestingMode && isQuickStart)
+        {
+            isQuickStart = false;
+            StartGame();
+        }
     }
 
     public override void OnLeftRoom()
@@ -143,9 +149,21 @@ public class MainMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(mapNameToLoad);
     }
 
-    public void TestRoom()
+    public void QuickStartGame()
     {
         PhotonNetwork.CreateRoom("test");
+
+        isQuickStart = true;
+    }
+
+    public void QuickCreateRoom()
+    {
+        PhotonNetwork.CreateRoom("test");
+    }
+
+    public void QuickJoin()
+    {
+        PhotonNetwork.JoinRoom("test");
     }
 
     public void JoinRoom()
