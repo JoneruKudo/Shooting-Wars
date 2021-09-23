@@ -209,15 +209,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     private void Shoot()
-    {
-        Instantiate(muzzleFlashVFX, true ? networkMuzzlePoint : localMuzzlePoint);
+    {    
+        GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
+            networkMuzzlePoint.position,
+            networkMuzzlePoint.rotation);
+
+        if (photonView.IsMine)
+        {
+            Destroy(muzzleInstance);
+            Instantiate(muzzleFlashVFX, localMuzzlePoint);
+        }
 
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         ray.origin = mainCam.transform.position;
 
         if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
         {
-            Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+            PhotonNetwork.Instantiate(bulletImpactVFX.name,
+                hit.point + (hit.normal * 0.003f),
+                Quaternion.LookRotation(hit.normal,
+                Vector3.up));
         }
 
         weaponCooldownTime = 0;
@@ -227,14 +238,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         while(true)
         {
-            Instantiate(muzzleFlashVFX, true ? networkMuzzlePoint : localMuzzlePoint);
+            GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
+                networkMuzzlePoint.position,
+                networkMuzzlePoint.rotation);
+
+            if (photonView.IsMine)
+            {
+                Destroy(muzzleInstance);
+                Instantiate(muzzleFlashVFX, localMuzzlePoint);
+            }
 
             Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             ray.origin = mainCam.transform.position;
 
             if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
             {
-                Instantiate(bulletImpactVFX, hit.point + (hit.normal * 0.003f), Quaternion.LookRotation(hit.normal, Vector3.up));
+                PhotonNetwork.Instantiate(bulletImpactVFX.name,
+                               hit.point + (hit.normal * 0.003f),
+                               Quaternion.LookRotation(hit.normal,
+                               Vector3.up));
             }
 
             yield return new WaitForSecondsRealtime(guns[selectedGunIndex].timeBetweenShots);

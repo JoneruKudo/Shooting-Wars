@@ -431,10 +431,10 @@ MonoBehaviour:
   camPosition: {fileID: 5336235247226976521}
   mouseSensitivity: 7.5
   verticalAngleLimit: 60
-  movementSpeed: 5
+  movementSpeed: 10
   charController: {fileID: 5336235246039129483}
-  jumpHeight: 5
-  gravityMultiplier: 1.5
+  jumpHeight: 3.25
+  gravityMultiplier: 1
   groundPoint: {fileID: 5336235247642044738}
   groundLayer:
     serializedVersion: 2
