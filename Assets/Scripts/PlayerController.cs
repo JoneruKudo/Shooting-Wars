@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public LayerMask groundLayer;
     public bool isGrounded;
 
+    public GameObject bulletImpactBodyVFX;
     public GameObject bulletImpactVFX;
     public GameObject muzzleFlashVFX;
     public Transform localMuzzlePoint;
@@ -42,6 +43,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private int selectedGunIndex;
     private float weaponCooldownTime = Mathf.Infinity;
     Coroutine firingCo;
+    public bool isAiming = false;
+    public float standardCameraSensitivity = 20;
 
     public GameObject playerBodyOverNetwork;
     public GameObject playerBodyLocal;
@@ -55,23 +58,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        currentHealthPoints = maxHealthPoints;
-
         Camera.main.transform.position = camPosition.position;
         Camera.main.transform.rotation = camPosition.rotation;
 
         mainCam = Camera.main;
-
-        EquipWeapon(0);
-
-        WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(0);
 
         if (photonView.IsMine)
         {
             playerBodyLocal.SetActive(true);
             playerBodyOverNetwork.SetActive(false);
 
+            currentHealthPoints = maxHealthPoints;
+
             HUDController.instance.healthText.text = currentHealthPoints.ToString();
+
+            EquipWeapon(0);
+
+            WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(0);
         }
         else
         {
@@ -125,6 +128,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 Shoot();
             }
         }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (!isAiming)
+            {
+                Aim();
+            }
+            else
+            {
+                ReleaseAim();
+            }
+        }
 #endif
 
     }
@@ -174,6 +189,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     }
 
+    public void Aim()
+    {
+        mainCam.fieldOfView = guns[selectedGunIndex].weaponFieldOfView;
+
+        bl_MobileInput.TouchPadSensitivity = bl_MobileInput.TouchPadSensitivity / guns[selectedGunIndex].touchpadFactorWhenAiming;
+
+        isAiming = true;
+    }
+
+    public void ReleaseAim()
+    {
+        mainCam.fieldOfView = 60f;
+
+        bl_MobileInput.TouchPadSensitivity = standardCameraSensitivity;
+
+        isAiming = false;
+    }
+
     private void MovementHandler()
     {
         float yVelocity = movement.y;
@@ -211,7 +244,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Jump();
         }
 
-        charController.Move(movement * movementSpeed * Time.deltaTime);
+        float baseMovementSpeed = 0;
+
+        if (isAiming)
+        {
+            baseMovementSpeed = movementSpeed / guns[selectedGunIndex].movespeedFactorWhenAiming;
+        }
+        else
+        {
+            baseMovementSpeed = movementSpeed;
+        }
+
+        charController.Move(movement * baseMovementSpeed * Time.deltaTime);
     }
 
     public void Jump()
@@ -242,17 +286,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
         {
-            PhotonNetwork.Instantiate(bulletImpactVFX.name,
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                PhotonNetwork.Instantiate(bulletImpactBodyVFX.name,
                 hit.point + (hit.normal * 0.003f),
                 Quaternion.LookRotation(hit.normal,
                 Vector3.up));
 
-            if (hit.collider.gameObject.tag == "Player")
-            {
                 hit.collider.GetComponent<PhotonView>().RPC("RpcDealDamage",
                     RpcTarget.All,
                     photonView.Owner.NickName,
                     guns[selectedGunIndex].damage);
+            }
+            else
+            {
+                PhotonNetwork.Instantiate(bulletImpactVFX.name,
+                hit.point + (hit.normal * 0.003f),
+                Quaternion.LookRotation(hit.normal,
+                Vector3.up));
             }
         }
 
@@ -278,19 +329,27 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (Physics.Raycast(ray, out RaycastHit hit, guns[selectedGunIndex].weaponRange))
             {
-                PhotonNetwork.Instantiate(bulletImpactVFX.name,
-                               hit.point + (hit.normal * 0.003f),
-                               Quaternion.LookRotation(hit.normal,
-                               Vector3.up));
-
                 if (hit.collider.gameObject.tag == "Player")
                 {
+                    PhotonNetwork.Instantiate(bulletImpactBodyVFX.name,
+                    hit.point + (hit.normal * 0.003f),
+                    Quaternion.LookRotation(hit.normal,
+                    Vector3.up));
+
                     hit.collider.GetComponent<PhotonView>().RPC("RpcDealDamage",
                         RpcTarget.All,
                         photonView.Owner.NickName,
                         guns[selectedGunIndex].damage);
                 }
+                else
+                {
+                    PhotonNetwork.Instantiate(bulletImpactVFX.name,
+                    hit.point + (hit.normal * 0.003f),
+                    Quaternion.LookRotation(hit.normal,
+                    Vector3.up));
+                }
             }
+
             yield return new WaitForSecondsRealtime(guns[selectedGunIndex].timeBetweenShots);
 
             weaponCooldownTime = 0;
@@ -313,6 +372,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void EquipWeapon(int gunIndex)
     {
+        if (isAiming)
+        {
+            ReleaseAim();
+        }
+
         selectedGunIndex = gunIndex;
 
         foreach (Gun gun in guns)
@@ -375,8 +439,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();
-
-        Debug.Log(photonView.Owner.NickName + " health: " + currentHealthPoints);
     }
     
     [PunRPC]
@@ -385,11 +447,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine) return;
 
         playerAnim.SetTrigger("Dead");
-    }
-
-    private void DieHandler()
-    {
-
     }
 
 }

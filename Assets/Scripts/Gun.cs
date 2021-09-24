@@ -7,4 +7,7 @@ public class Gun : MonoBehaviour
     public int damage;
     public float weaponRange;
     public float timeBetweenShots;
+    public float weaponFieldOfView;
+    public float movespeedFactorWhenAiming;
+    public float touchpadFactorWhenAiming;
 }

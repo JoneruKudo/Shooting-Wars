@@ -190,6 +190,9 @@ MonoBehaviour:
   damage: 10
   weaponRange: 100
   timeBetweenShots: 0.1
+  weaponFieldOfView: 40
+  movespeedFactorWhenAiming: 2
+  touchpadFactorWhenAiming: 2
 --- !u!1 &5336235245953504213
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +445,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
+  bulletImpactBodyVFX: {fileID: 2828894329435884915, guid: 17a3b6914bd04dc4ca99311bb0a15433, type: 3}
   bulletImpactVFX: {fileID: 1454856348504643594, guid: 45d7449acb96caa45814ebc5df355553, type: 3}
   muzzleFlashVFX: {fileID: 3892272817006548860, guid: 504797aadffe795499ec33d94b97d356, type: 3}
   localMuzzlePoint: {fileID: 5336235247862530062}
@@ -451,6 +455,8 @@ MonoBehaviour:
   - {fileID: 5336235246452695296}
   - {fileID: 5336235246920144041}
   - {fileID: 5336235246255866779}
+  isAiming: 0
+  standardCameraSensitivity: 20
   playerBodyOverNetwork: {fileID: 8072184045430389045}
   playerBodyLocal: {fileID: 5336235248031708708}
 --- !u!95 &1982132439613779878
@@ -557,6 +563,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: isGrounded
+  - Type: 9
+    SynchronizeType: 0
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -843,6 +852,9 @@ MonoBehaviour:
   damage: 15
   weaponRange: 150
   timeBetweenShots: 0.3
+  weaponFieldOfView: 40
+  movespeedFactorWhenAiming: 2
+  touchpadFactorWhenAiming: 2
 --- !u!1 &5336235246968911035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,6 +1262,9 @@ MonoBehaviour:
   damage: 50
   weaponRange: 500
   timeBetweenShots: 1.5
+  weaponFieldOfView: 30
+  movespeedFactorWhenAiming: 4
+  touchpadFactorWhenAiming: 3.5
 --- !u!1 &5336235247020592604
 GameObject:
   m_ObjectHideFlags: 0
