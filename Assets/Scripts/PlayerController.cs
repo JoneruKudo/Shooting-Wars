@@ -249,7 +249,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (hit.collider.gameObject.tag == "Player")
             {
-                hit.collider.GetComponent<PhotonView>().RPC("DealDamage",
+                hit.collider.GetComponent<PhotonView>().RPC("RpcDealDamage",
                     RpcTarget.All,
                     photonView.Owner.NickName,
                     guns[selectedGunIndex].damage);
@@ -285,7 +285,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 if (hit.collider.gameObject.tag == "Player")
                 {
-                    hit.collider.GetComponent<PhotonView>().RPC("DealDamage",
+                    hit.collider.GetComponent<PhotonView>().RPC("RpcDealDamage",
                         RpcTarget.All,
                         photonView.Owner.NickName,
                         guns[selectedGunIndex].damage);
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void DealDamage(string damager, int damage)
+    public void RpcDealDamage(string damager, int damage)
     {
         TakeDamage(damager, damage);
     }
@@ -369,7 +369,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             isDead = true;
 
-            photonView.RPC("DieHandler", RpcTarget.All);
+            photonView.RPC("RpcDie", RpcTarget.All);
 
             PlayerSpawner.instance.PlayerDie();
         }
@@ -380,11 +380,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     
     [PunRPC]
-    public void DieHandler()
+    public void RpcDie()
     {
         if (photonView.IsMine) return;
 
         playerAnim.SetTrigger("Dead");
+    }
+
+    private void DieHandler()
+    {
+
     }
 
 }

@@ -14,6 +14,7 @@ public class PlayerSpawner : MonoBehaviour
     private GameObject player;
 
     public float timeToRespawn;
+    private float deathAnimationTime = 3f;
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator DieCo()
     {
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(deathAnimationTime);
 
         PhotonNetwork.Destroy(player);
 

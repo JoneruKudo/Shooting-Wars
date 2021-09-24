@@ -38,6 +38,8 @@ MonoBehaviour:
   - DestroyRpc
   - DealDamage
   - DieHandler
+  - RpcDealDamage
+  - RpcDie
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
