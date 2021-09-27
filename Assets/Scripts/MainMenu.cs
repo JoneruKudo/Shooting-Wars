@@ -45,18 +45,27 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.NickName = "Player " + Random.Range(1, 1000);
+        if (PhotonNetwork.NickName.Length <= 0)
+        {
+            PhotonNetwork.NickName = "Player " + Random.Range(1, 1000);
+        }
 
         CloseAllScreen();
 
-        loadingScreen.SetActive(true);
+        mainMenuScreen.SetActive(true);
 
-        loadingText.text = "Connecting to Network...";
+        if (!PhotonNetwork.IsConnected)
+        {
+            CloseAllScreen();
 
-        PhotonNetwork.ConnectUsingSettings();
+            loadingScreen.SetActive(true);
+
+            loadingText.text = "Connecting to Network...";
+
+            PhotonNetwork.ConnectUsingSettings();
+        }
 
         testButtons.SetActive(isTestingMode ? true : false);
-
     }
 
     public void CloseAllScreen()

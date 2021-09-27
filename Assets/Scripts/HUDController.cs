@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class HUDController : MonoBehaviour
 {
@@ -98,5 +99,14 @@ public class HUDController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void BackToMainMenu()
+    {
+        PhotonNetwork.AutomaticallySyncScene = false;
+
+        PhotonNetwork.LeaveRoom();
+
+        SceneManager.LoadScene(0);
     }
 }
