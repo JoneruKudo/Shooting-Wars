@@ -17,8 +17,20 @@ public class HUDController : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text ammoText;
     public TMP_Text warningText;
+    public Image reloadingFillBarImage;
+    public GameObject reloadingFillBarObject;
+    private float originalReloadingImageWidth;
+    private float originalReloadingImageHeight;
 
     Coroutine warnCor;
+
+    private void Start()
+    {
+        originalReloadingImageWidth = reloadingFillBarImage.rectTransform.sizeDelta.x;
+        originalReloadingImageHeight = reloadingFillBarImage.rectTransform.sizeDelta.y;
+
+        reloadingFillBarObject.SetActive(false);
+    }
 
     public PlayerController GetPlayerController()
     {
@@ -53,5 +65,38 @@ public class HUDController : MonoBehaviour
         yield return new WaitForSecondsRealtime(waitingTime);
 
         warningText.text = "";
+    }
+
+    public void ShowReloadingFillBar(float reloadingTime)
+    {
+        StartCoroutine(ReloadingBarCo(reloadingTime));
+    }
+
+    private IEnumerator ReloadingBarCo(float reloadingTime)
+    {
+        reloadingFillBarObject.SetActive(true);
+
+        float timeToReload = reloadingFillBarImage.rectTransform.sizeDelta.x / reloadingTime;
+
+        float xWidth = originalReloadingImageWidth;
+
+        while (true)
+        {
+            reloadingFillBarImage.rectTransform.sizeDelta = new Vector2(xWidth, originalReloadingImageHeight);
+
+            if (reloadingFillBarImage.rectTransform.sizeDelta.x <= 0)
+            {
+                reloadingFillBarImage.rectTransform.sizeDelta = new Vector2(originalReloadingImageWidth, 
+                                                                            originalReloadingImageHeight);
+
+                reloadingFillBarObject.SetActive(false);
+
+                break;
+            }
+
+            xWidth -= Time.deltaTime * timeToReload;
+
+            yield return null;
+        }
     }
 }

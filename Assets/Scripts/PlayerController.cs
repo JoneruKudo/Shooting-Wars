@@ -289,7 +289,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (guns[selectedGunIndex].GetCurrentAmmo() <= 0)
         {
-            HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+            if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0)
+            {
+                HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+            }
+            else
+            {
+                Reload();
+            }
+
             return;
         }
 
@@ -344,7 +352,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (guns[selectedGunIndex].GetCurrentAmmo() <= 0)
             {
-                HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+                if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0)
+                {
+                    HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+                }
+                else
+                {
+                    Reload();
+                }
 
                 break;
             }
@@ -464,9 +479,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (guns[selectedGunIndex].IsMagazineFull()) return;
 
-        reloadingCor = StartCoroutine(ReloadCor());
+        if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0 && guns[selectedGunIndex].GetCurrentAmmo() <= 0)
+        {
+            HUDController.instance.ShowWarningText("No more ammo to Reload!", 2f, Color.red);
 
-        Debug.Log("reloading");
+            return;
+        }
+
+        if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0) return;
+        
+        reloadingCor = StartCoroutine(ReloadCor());
     }
 
     private IEnumerator ReloadCor()
@@ -475,6 +497,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         HUDController.instance.ShowWarningText("Reloading...", guns[selectedGunIndex].reloadingTime, Color.white);
 
+        HUDController.instance.ShowReloadingFillBar(guns[selectedGunIndex].reloadingTime);
+
         yield return new WaitForSecondsRealtime(guns[selectedGunIndex].reloadingTime);
 
         guns[selectedGunIndex].Reload();
@@ -482,6 +506,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
         guns[selectedGunIndex].ShowAmmoDisplay();
 
         isReloading = false;
+    }
+
+    public void AddAmmo(AmmoType ammoType, int amount)
+    {
+        foreach (Gun gun in guns)
+        {
+            if (gun.ammoType == ammoType)
+            {
+                gun.AddAmmoReserve(amount);
+            }
+        }
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
     }
 
     [PunRPC]

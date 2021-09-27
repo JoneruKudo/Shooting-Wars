@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public AmmoType ammoType;
     public int damage;
     public float weaponRange;
     public float timeBetweenShots;
@@ -18,24 +19,19 @@ public class Gun : MonoBehaviour
     private int currentAmmo = 0;
     private int currentAmmoReserve;
 
+    public int GetCurrentAmmo() { return currentAmmo; }
+
+    public int GetCurrentAmmoReserve() { return currentAmmoReserve; }
+
+    public bool IsMagazineFull() { return currentAmmo == magazineAmmoCapacity; }
+
     public void AddStartingReserveAmmo()
     {
         currentAmmoReserve = startingReserveAmmo;
     }
 
-    public int GetCurrentAmmo() { return currentAmmo; }
-
-    public bool IsMagazineFull() { return currentAmmo == magazineAmmoCapacity; }
-
     public void Reload()
     {
-        if (currentAmmoReserve <= 0)
-        {
-            HUDController.instance.ShowWarningText("No more ammo to Reload!", 2f, Color.red);
-
-            return;
-        }
-
         int ammoToReload = magazineAmmoCapacity - currentAmmo;
 
         if (ammoToReload < currentAmmoReserve)
@@ -60,6 +56,11 @@ public class Gun : MonoBehaviour
     public void AddAmmoReserve(int amount)
     {
         currentAmmoReserve += amount;
+
+        if (currentAmmoReserve >= maxReserveAmmo)
+        {
+            currentAmmoReserve = maxReserveAmmo;
+        }
     }
 
     public void ShowAmmoDisplay()
