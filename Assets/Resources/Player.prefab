@@ -193,6 +193,10 @@ MonoBehaviour:
   weaponFieldOfView: 40
   movespeedFactorWhenAiming: 2
   touchpadFactorWhenAiming: 2
+  magazineAmmoCapacity: 30
+  maxReserveAmmo: 120
+  startingReserveAmmo: 60
+  reloadingTime: 2
 --- !u!1 &5336235245953504213
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,10 +855,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 15
   weaponRange: 150
-  timeBetweenShots: 0.3
+  timeBetweenShots: 0.2
   weaponFieldOfView: 40
   movespeedFactorWhenAiming: 2
   touchpadFactorWhenAiming: 2
+  magazineAmmoCapacity: 25
+  maxReserveAmmo: 75
+  startingReserveAmmo: 50
+  reloadingTime: 2
 --- !u!1 &5336235246968911035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,6 +1273,10 @@ MonoBehaviour:
   weaponFieldOfView: 30
   movespeedFactorWhenAiming: 4
   touchpadFactorWhenAiming: 3.5
+  magazineAmmoCapacity: 10
+  maxReserveAmmo: 30
+  startingReserveAmmo: 15
+  reloadingTime: 3
 --- !u!1 &5336235247020592604
 GameObject:
   m_ObjectHideFlags: 0

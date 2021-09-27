@@ -15,6 +15,10 @@ public class HUDController : MonoBehaviour
     }
 
     public TMP_Text healthText;
+    public TMP_Text ammoText;
+    public TMP_Text warningText;
+
+    Coroutine warnCor;
 
     public PlayerController GetPlayerController()
     {
@@ -28,5 +32,26 @@ public class HUDController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void ShowWarningText(string message, float showingDuration, Color textColor)
+    {
+        if (warnCor != null)
+        {
+            StopCoroutine(warnCor);
+        }
+
+        warnCor = StartCoroutine(WarningCor(message, showingDuration, textColor));
+    }
+
+    private IEnumerator WarningCor(string message, float waitingTime, Color textColor)
+    {
+        warningText.text = message;
+
+        warningText.color = textColor;
+
+        yield return new WaitForSecondsRealtime(waitingTime);
+
+        warningText.text = "";
     }
 }

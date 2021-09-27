@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Coroutine firingCo;
     public bool isAiming = false;
     public float standardCameraSensitivity = 20;
+    Coroutine reloadingCor;
+    private bool isReloading = false;
 
     public GameObject playerBodyOverNetwork;
     public GameObject playerBodyLocal;
@@ -58,19 +60,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Camera.main.transform.position = camPosition.position;
-        Camera.main.transform.rotation = camPosition.rotation;
 
         mainCam = Camera.main;
 
         if (photonView.IsMine)
         {
+            Camera.main.transform.position = camPosition.position;
+            Camera.main.transform.rotation = camPosition.rotation;
+
             playerBodyLocal.SetActive(true);
             playerBodyOverNetwork.SetActive(false);
 
             currentHealthPoints = maxHealthPoints;
 
             HUDController.instance.healthText.text = currentHealthPoints.ToString();
+
+            foreach (Gun gun in guns)
+            {
+                gun.AddStartingReserveAmmo();
+                gun.Reload();
+            }
 
             EquipWeapon(0);
 
@@ -127,6 +136,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 weaponCooldownTime = 0;
                 Shoot();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
         }
         
         if (Input.GetMouseButtonDown(1))
@@ -271,6 +285,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Shoot() // using mouse
     {
+        if (isReloading) return;
+
+        if (guns[selectedGunIndex].GetCurrentAmmo() <= 0)
+        {
+            HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+            return;
+        }
+
+        guns[selectedGunIndex].ReduceCurrentAmmo();
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
+
         GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
             networkMuzzlePoint.position,
             networkMuzzlePoint.rotation);
@@ -314,6 +340,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         while (true)
         {
+            if (isReloading) break;
+
+            if (guns[selectedGunIndex].GetCurrentAmmo() <= 0)
+            {
+                HUDController.instance.ShowWarningText("No more ammo left!", 2f, Color.red);
+
+                break;
+            }
+
+            guns[selectedGunIndex].ReduceCurrentAmmo();
+
+            guns[selectedGunIndex].ShowAmmoDisplay();
+
             GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
                 networkMuzzlePoint.position,
                 networkMuzzlePoint.rotation);
@@ -385,10 +424,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         guns[selectedGunIndex].gameObject.SetActive(true);
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
     }
 
     public void SwitchWeaponOnRight()
     {
+        if (isReloading) return;
+
         selectedGunIndex += 1;
 
         if (selectedGunIndex > guns.Length - 1)
@@ -402,6 +445,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void SwitchWeaponOnLeft()
     {
+        if (isReloading) return;
+
         selectedGunIndex -= 1;
 
         if (selectedGunIndex < 0)
@@ -411,6 +456,32 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         EquipWeapon(selectedGunIndex);
         WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+    }
+
+    public void Reload()
+    {
+        if (isReloading) return;
+
+        if (guns[selectedGunIndex].IsMagazineFull()) return;
+
+        reloadingCor = StartCoroutine(ReloadCor());
+
+        Debug.Log("reloading");
+    }
+
+    private IEnumerator ReloadCor()
+    {
+        isReloading = true;
+
+        HUDController.instance.ShowWarningText("Reloading...", guns[selectedGunIndex].reloadingTime, Color.white);
+
+        yield return new WaitForSecondsRealtime(guns[selectedGunIndex].reloadingTime);
+
+        guns[selectedGunIndex].Reload();
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
+
+        isReloading = false;
     }
 
     [PunRPC]
