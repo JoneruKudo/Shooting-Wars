@@ -8,15 +8,9 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
 {
     public AmmoPickUp[] ammoPickups;
     public float spawnTime;
+    public int spawnerIndex;
 
     GameObject objInstantiated;
-
-    public static AmmoPickupSpawner instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     public void SpawnPickup()
     {
@@ -28,6 +22,8 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
             ammoPickups[ammoToSpawn].gameObject.name, 
             transform.position, 
             Quaternion.identity);
+
+        objInstantiated.GetComponent<PhotonView>().RPC("RPCSetSpawnerIndex", RpcTarget.All, spawnerIndex);
     }
 
     public void DestroyPickup()
@@ -50,6 +46,13 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
         {
             SpawnPickup();
         }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
+
+        objInstantiated.GetComponent<PhotonView>().RPC("RPCSetSpawnerIndex", RpcTarget.All, spawnerIndex);
     }
 
 

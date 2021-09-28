@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public GameObject playerBodyOverNetwork;
     public GameObject playerBodyLocal;
 
+    public AmmoPickupSpawner[] spawners;
+
     public static PlayerController instance;
 
     private void Awake()
@@ -59,8 +61,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-
         mainCam = Camera.main;
+
+        spawners = FindObjectsOfType<AmmoPickupSpawner>();
 
         if (photonView.IsMine)
         {
@@ -530,11 +533,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void RPCDestroyPickup()
+    public void RPCDestroyPickup(int spawnerIndex)
     {
         if (!photonView.IsMine) return;
 
-        AmmoPickupSpawner.instance.DestroyPickup();
+        foreach (AmmoPickupSpawner spawner in spawners)
+        {
+            if (spawner.spawnerIndex == spawnerIndex)
+            {
+                spawner.DestroyPickup();
+                break;
+            }
+        }
     }
 
     [PunRPC]

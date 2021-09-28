@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class AmmoPickUp : MonoBehaviour
+public class AmmoPickUp : MonoBehaviourPun
 {
     public int ammoAmount;
     public AmmoType ammoType;
+    public int spawnerIndex;
+
+    PlayerController playerCon;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +18,12 @@ public class AmmoPickUp : MonoBehaviour
         {
             other.GetComponent<PhotonView>().RPC("RPCAddAmmo", RpcTarget.All, ammoType, ammoAmount);
 
-            GetPlayerController().GetComponent<PhotonView>().RPC("RPCDestroyPickup", RpcTarget.All);
+            if (playerCon == null)
+            {
+                playerCon = GetPlayerController();
+            }
+
+            playerCon.GetComponent<PhotonView>().RPC("RPCDestroyPickup", RpcTarget.All, spawnerIndex);  
         }
     }
 
@@ -30,6 +39,13 @@ public class AmmoPickUp : MonoBehaviour
             }
         }
         return null;
+
+    }
+    
+    [PunRPC]
+    public void RPCSetSpawnerIndex(int newIndex)
+    {
+        spawnerIndex = newIndex;
     }
 }
 

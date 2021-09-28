@@ -27,7 +27,12 @@ public class PlayerSpawner : MonoBehaviour
         {
             SpawnPlayer();
 
-            AmmoPickupSpawner.instance.SpawnPickup();
+            AmmoPickupSpawner[] spawners = FindObjectsOfType<AmmoPickupSpawner>();
+
+            foreach (AmmoPickupSpawner spawner in spawners)
+            {
+                spawner.SpawnPickup();
+            }
         }
     }
 

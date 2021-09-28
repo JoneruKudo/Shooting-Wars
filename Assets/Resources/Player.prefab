@@ -464,6 +464,8 @@ MonoBehaviour:
   standardCameraSensitivity: 20
   playerBodyOverNetwork: {fileID: 8072184045430389045}
   playerBodyLocal: {fileID: 5336235248031708708}
+  spawners:
+  - {fileID: 0}
 --- !u!95 &1982132439613779878
 Animator:
   serializedVersion: 3

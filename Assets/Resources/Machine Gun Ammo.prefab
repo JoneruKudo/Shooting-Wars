@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoAmount: 30
   ammoType: 1
+  spawnerIndex: 0
 --- !u!114 &2436895910232209974
 MonoBehaviour:
   m_ObjectHideFlags: 0
