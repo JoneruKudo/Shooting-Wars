@@ -124,8 +124,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LeaveRoom();
 
-        PhotonNetwork.LeaveLobby();
-
         CloseAllScreen();
 
         loadingScreen.SetActive(true);
@@ -148,13 +146,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
             isQuickStart = false;
             StartGame();
         }
-    }
-
-    public override void OnLeftRoom()
-    {
-        PhotonNetwork.JoinLobby();
-
-        ReturnToMainMenu();
     }
 
     public void StartGame()
@@ -304,7 +295,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         joinButton.GetComponent<Button>().interactable = true;
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) // this is called only on join and left lobby
     {  
        foreach(RoomButton roomButton in roomButtons)
         {

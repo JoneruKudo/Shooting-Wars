@@ -20,7 +20,7 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
 
     public void SpawnPickup()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
 
         int ammoToSpawn = Random.Range(0, ammoPickups.Length);
 
@@ -28,8 +28,6 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
             ammoPickups[ammoToSpawn].gameObject.name, 
             transform.position, 
             Quaternion.identity);
-
-        objInstantiated.GetComponent<AmmoPickUp>().SetMasterPhotonView(GetPlayerController().GetComponent<PhotonView>());
     }
 
     public void DestroyPickup()
@@ -54,17 +52,5 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
         }
     }
 
-    public PlayerController GetPlayerController()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject player in players)
-        {
-            if (player.GetComponent<PhotonView>().IsMine)
-            {
-                return player.GetComponent<PlayerController>();
-            }
-        }
-        return null;
-    }
 }

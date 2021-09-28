@@ -83,8 +83,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             EquipWeapon(0);
 
             WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(0);
-
-            AmmoPickupSpawner.instance.SpawnPickup();
         }
         else
         {
@@ -534,7 +532,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPCDestroyPickup()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
+        if (!photonView.IsMine) return;
 
         AmmoPickupSpawner.instance.DestroyPickup();
     }

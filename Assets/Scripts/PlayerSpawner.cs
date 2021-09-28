@@ -26,6 +26,8 @@ public class PlayerSpawner : MonoBehaviour
         if (PhotonNetwork.IsConnected)
         {
             SpawnPlayer();
+
+            AmmoPickupSpawner.instance.SpawnPickup();
         }
     }
 
