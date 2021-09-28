@@ -18,22 +18,18 @@ public class AmmoPickupSpawner : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    public void SpawnPickup()
     {
-        if (PhotonNetwork.IsConnected)
-        {
-            SpawnPickup();
-        }
-    }
+        if (!PhotonNetwork.IsMasterClient) return;
 
-    private void SpawnPickup()
-    {
         int ammoToSpawn = Random.Range(0, ammoPickups.Length);
 
         objInstantiated = PhotonNetwork.Instantiate(
             ammoPickups[ammoToSpawn].gameObject.name, 
             transform.position, 
             Quaternion.identity);
+
+        objInstantiated.GetComponent<AmmoPickUp>().SetMasterPlayerController(HUDController.instance.GetPlayerController());
     }
 
     public void DestroyPickup()

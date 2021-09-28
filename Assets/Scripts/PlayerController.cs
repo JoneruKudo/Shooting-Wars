@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             EquipWeapon(0);
 
             WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(0);
+
+            AmmoPickupSpawner.instance.SpawnPickup();
         }
         else
         {
@@ -456,6 +458,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         EquipWeapon(selectedGunIndex);
         WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
     }
 
     public void SwitchWeaponOnLeft()
@@ -471,6 +475,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         EquipWeapon(selectedGunIndex);
         WeaponSwitcherUI.instance.UpdateSlotSwitcherInfo(selectedGunIndex);
+
+        guns[selectedGunIndex].ShowAmmoDisplay();
     }
 
     public void Reload()
@@ -519,6 +525,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         guns[selectedGunIndex].ShowAmmoDisplay();
+    }
+
+    public void DestroyPickup()
+    {
+        AmmoPickupSpawner.instance.DestroyPickup();
     }
 
     [PunRPC]
