@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class AmmoPickupSpawner : MonoBehaviour
+public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
 {
     public AmmoPickUp[] ammoPickups;
     public float spawnTime;
@@ -29,7 +29,7 @@ public class AmmoPickupSpawner : MonoBehaviour
             transform.position, 
             Quaternion.identity);
 
-        objInstantiated.GetComponent<AmmoPickUp>().SetMasterPlayerController(HUDController.instance.GetPlayerController());
+        objInstantiated.GetComponent<AmmoPickUp>().SetMasterPhotonView(GetPlayerController().GetComponent<PhotonView>());
     }
 
     public void DestroyPickup()
@@ -44,5 +44,27 @@ public class AmmoPickupSpawner : MonoBehaviour
         yield return new WaitForSecondsRealtime(spawnTime);
 
         SpawnPickup();
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (newMasterClient.IsLocal)
+        {
+            SpawnPickup();
+        }
+    }
+
+    public PlayerController GetPlayerController()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject player in players)
+        {
+            if (player.GetComponent<PhotonView>().IsMine)
+            {
+                return player.GetComponent<PlayerController>();
+            }
+        }
+        return null;
     }
 }

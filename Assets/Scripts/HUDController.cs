@@ -105,7 +105,11 @@ public class HUDController : MonoBehaviour
     {
         PhotonNetwork.AutomaticallySyncScene = false;
 
+        PhotonNetwork.DestroyAll(true);
+
         PhotonNetwork.LeaveRoom();
+
+        PhotonNetwork.LeaveLobby();
 
         SceneManager.LoadScene(0);
     }

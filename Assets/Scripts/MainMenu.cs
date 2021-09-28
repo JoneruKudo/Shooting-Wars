@@ -124,6 +124,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LeaveRoom();
 
+        PhotonNetwork.LeaveLobby();
+
         CloseAllScreen();
 
         loadingScreen.SetActive(true);
@@ -150,6 +152,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        PhotonNetwork.JoinLobby();
+
         ReturnToMainMenu();
     }
 
@@ -301,7 +305,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
+    {  
        foreach(RoomButton roomButton in roomButtons)
         {
             Destroy(roomButton.gameObject);

@@ -8,23 +8,25 @@ public class AmmoPickUp : MonoBehaviour
     public int ammoAmount;
     public AmmoType ammoType;
 
-    PlayerController masterPlayerCon;
+    PhotonView masterPhotonView;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            PlayerController playerCon = other.GetComponent<PlayerController>();
+            other.GetComponent<PhotonView>().RPC("RPCAddAmmo", RpcTarget.All, ammoType, ammoAmount);
 
-            playerCon.AddAmmo(ammoType, ammoAmount);
+            //PlayerController playerCon = other.GetComponent<PlayerController>();
 
-            masterPlayerCon.DestroyPickup();
+            // playerCon.RPCAddAmmo(ammoType, ammoAmount);
+
+            other.GetComponent<PhotonView>().RPC("RPCDestroyPickup", RpcTarget.All);
         }
     }
 
-    public void SetMasterPlayerController(PlayerController playerCon)
+    public void SetMasterPhotonView(PhotonView photonView)
     {
-        masterPlayerCon = playerCon;
+        masterPhotonView = photonView;
     }
 }
 

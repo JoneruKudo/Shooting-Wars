@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Coroutine firingCo;
     public bool isAiming = false;
     public float standardCameraSensitivity = 20;
-    Coroutine reloadingCor;
     private bool isReloading = false;
 
     public GameObject playerBodyOverNetwork;
@@ -494,7 +493,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0) return;
         
-        reloadingCor = StartCoroutine(ReloadCor());
+        StartCoroutine(ReloadCor());
     }
 
     private IEnumerator ReloadCor()
@@ -514,8 +513,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         isReloading = false;
     }
 
-    public void AddAmmo(AmmoType ammoType, int amount)
+    [PunRPC]
+    public void RPCAddAmmo(AmmoType ammoType, int amount)
     {
+        if (!photonView.IsMine) return;
+
         foreach (Gun gun in guns)
         {
             if (gun.ammoType == ammoType)
@@ -524,11 +526,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
 
+        HUDController.instance.ShowWarningText("Picked up " + ammoType + " Ammo", 3f, Color.white);
+
         guns[selectedGunIndex].ShowAmmoDisplay();
     }
 
-    public void DestroyPickup()
+    [PunRPC]
+    public void RPCDestroyPickup()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         AmmoPickupSpawner.instance.DestroyPickup();
     }
 
