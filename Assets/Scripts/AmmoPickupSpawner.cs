@@ -30,6 +30,12 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
 
+        if (objInstantiated == null)
+        {
+            Debug.LogError("objInstantiated is null");
+            return;
+        }
+
         StartCoroutine(DestroyCo());
     }
 
