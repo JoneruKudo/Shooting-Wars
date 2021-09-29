@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public float verticalAngleLimit = 60f;
     private float verticalRotationVariable;
     private Camera mainCam;
+    public Transform camPointWhenDead;
 
     public float movementSpeed = 5f;
     private Vector3 moveDirection, movement;
@@ -170,6 +171,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void LateUpdate()
     {
         if (!photonView.IsMine) return;
+
+        if (isDead) return;
 
         mainCam.transform.position = camPosition.position;
         mainCam.transform.rotation = camPosition.rotation;
@@ -585,9 +588,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RpcDie()
     {
-        if (photonView.IsMine) return;
+        ChangeCameraFocus();
+
+        playerBodyLocal.SetActive(false);
+        playerBodyOverNetwork.SetActive(true);
 
         playerAnim.SetTrigger("Dead");
+
+        if (photonView.IsMine)
+        {
+            HUDController.instance.warningText.text = "";
+        }
+    }
+
+    private void ChangeCameraFocus()
+    {
+        if (!photonView.IsMine) return;
+
+        mainCam.transform.position = camPointWhenDead.position;
+        mainCam.transform.rotation = camPointWhenDead.rotation;
     }
 
     [PunRPC]
@@ -606,6 +625,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
         {
             playerBodyOverNetwork.SetActive(true);
+        }
+
+        if (photonView.IsMine)
+        {
+            playerBodyLocal.SetActive(true);
+            playerBodyOverNetwork.SetActive(false);
         }
 
         SetPlayerSpawnInfo();

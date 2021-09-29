@@ -23,6 +23,11 @@ public class HUDController : MonoBehaviour
     private float originalReloadingImageWidth;
     private float originalReloadingImageHeight;
 
+    public GameObject respawningPanel;
+    public TMP_Text respawningText;
+
+    public GameObject playerControllerUI;
+
     Coroutine warnCor;
 
     private void Start()
@@ -31,6 +36,8 @@ public class HUDController : MonoBehaviour
         originalReloadingImageHeight = reloadingFillBarImage.rectTransform.sizeDelta.y;
 
         reloadingFillBarObject.SetActive(false);
+
+        respawningPanel.SetActive(false);
     }
 
     public PlayerController GetPlayerController()

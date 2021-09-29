@@ -14,7 +14,6 @@ public class PlayerSpawner : MonoBehaviour
     private GameObject player;
 
     public float timeToRespawn;
-    private float deathAnimationTime = 3f;
 
     bool isDead = false;
     float deathTimer;
@@ -38,7 +37,7 @@ public class PlayerSpawner : MonoBehaviour
             }
         }
 
-        deathTimer = deathAnimationTime + timeToRespawn;
+        deathTimer = timeToRespawn + 1f;
     }
 
     private void SpawnPlayer()
@@ -58,15 +57,19 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator DieCo()
     {
+        HUDController.instance.respawningPanel.SetActive(true);
+
+        HUDController.instance.playerControllerUI.SetActive(false);
+
         isDead = true;
 
-        yield return new WaitForSecondsRealtime(deathAnimationTime);
+        yield return new WaitForSecondsRealtime(timeToRespawn);
 
         //PhotonNetwork.Destroy(player);
 
         player.GetComponent<PhotonView>().RPC("RpcDisablePlayerBodyOverNetwork", RpcTarget.All);
 
-        yield return new WaitForSecondsRealtime(timeToRespawn);
+        yield return new WaitForSecondsRealtime(1f);
 
         //SpawnPlayer();
 
@@ -79,7 +82,12 @@ public class PlayerSpawner : MonoBehaviour
         {
             deathTimer -= Time.deltaTime;
 
-            Debug.Log((int)deathTimer);
+            if (deathTimer <= 0)
+            {
+                deathTimer = 0;
+            }
+
+            HUDController.instance.respawningText.text = "Respawning in " + (int)deathTimer + "...";
         }
     }
 
@@ -87,7 +95,11 @@ public class PlayerSpawner : MonoBehaviour
     {
         isDead = false;
 
-        deathTimer = deathAnimationTime + timeToRespawn;
+        deathTimer = timeToRespawn + 1f;
+
+        HUDController.instance.respawningPanel.SetActive(false);
+
+        HUDController.instance.playerControllerUI.SetActive(true);
 
         spawnIndex = Random.Range(0, spawnPoints.Length);
         
