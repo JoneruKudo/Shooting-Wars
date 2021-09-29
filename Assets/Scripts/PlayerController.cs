@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public AmmoPickupSpawner[] spawners;
 
+    public int kills;
+    public int deaths;
+
     public static PlayerController instance;
 
     private void Awake()

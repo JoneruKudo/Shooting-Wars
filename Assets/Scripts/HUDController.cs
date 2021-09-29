@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class HUDController : MonoBehaviour
+public class HUDController : MonoBehaviourPunCallbacks
 {
     public static HUDController instance;
 
@@ -31,6 +31,7 @@ public class HUDController : MonoBehaviour
 
     public GameObject leaderBoardPanel;
     public GameObject playerInfoOnLeaderboard;
+    private List<PlayerInfoLeaderboard> leaderboards = new List<PlayerInfoLeaderboard>();
 
     Coroutine warnCor;
 
@@ -43,15 +44,32 @@ public class HUDController : MonoBehaviour
 
         respawningPanel.SetActive(false);
 
+        UpdatePlayerLeaderboard();
+    }
+
+    private void UpdatePlayerLeaderboard()
+    {
+        foreach (PlayerInfoLeaderboard leaderboard in leaderboards)
+        {
+            Destroy(leaderboard.gameObject);
+        }
+
         Player[] players = PhotonNetwork.PlayerList;
 
-        Debug.Log(players.Length);
+        leaderboards.Clear();
 
         for (int i = 0; i < players.Length; i++)
         {
             GameObject playerInfoInstance = Instantiate(playerInfoOnLeaderboard, playerInfoOnLeaderboard.transform.parent);
+            if (PhotonNetwork.LocalPlayer.NickName == players[i].NickName )
+            {
+                playerInfoInstance.GetComponent<PlayerInfoLeaderboard>().playerNameText.color = new Color(0f, 255f, 17f, 255f);
+            }
+
             playerInfoInstance.GetComponent<PlayerInfoLeaderboard>().playerNameText.text = players[i].NickName;
             playerInfoInstance.SetActive(true);
+
+            leaderboards.Add(playerInfoInstance.GetComponent<PlayerInfoLeaderboard>());
         }
     }
 
@@ -131,6 +149,16 @@ public class HUDController : MonoBehaviour
     public void HideLeaderBoard()
     {
         leaderBoardPanel.SetActive(false);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        UpdatePlayerLeaderboard();
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        UpdatePlayerLeaderboard();
     }
 
     public void BackToMainMenu()
