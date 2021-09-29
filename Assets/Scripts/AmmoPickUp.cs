@@ -16,12 +16,17 @@ public class AmmoPickUp : MonoBehaviourPun
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<PhotonView>().RPC("RPCAddAmmo", RpcTarget.All, ammoType, ammoAmount);
-
             if (playerCon == null)
             {
                 playerCon = GetPlayerController();
             }
+           
+            if (playerCon == null)
+            {
+                return;
+            }
+            
+            other.GetComponent<PhotonView>().RPC("RPCAddAmmo", RpcTarget.All, ammoType, ammoAmount);
 
             playerCon.GetComponent<PhotonView>().RPC("RPCDestroyPickup", RpcTarget.All, spawnerIndex);  
         }
@@ -39,7 +44,6 @@ public class AmmoPickUp : MonoBehaviourPun
             }
         }
         return null;
-
     }
     
     [PunRPC]

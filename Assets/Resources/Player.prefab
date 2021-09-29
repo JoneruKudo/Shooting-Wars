@@ -196,7 +196,7 @@ MonoBehaviour:
   touchpadFactorWhenAiming: 2
   magazineAmmoCapacity: 30
   maxReserveAmmo: 120
-  startingReserveAmmo: 60
+  startingReserveAmmo: 30
   reloadingTime: 2
 --- !u!1 &5336235245953504213
 GameObject:
@@ -865,7 +865,7 @@ MonoBehaviour:
   touchpadFactorWhenAiming: 2
   magazineAmmoCapacity: 25
   maxReserveAmmo: 75
-  startingReserveAmmo: 50
+  startingReserveAmmo: 25
   reloadingTime: 2
 --- !u!1 &5336235246968911035
 GameObject:
@@ -1280,7 +1280,7 @@ MonoBehaviour:
   touchpadFactorWhenAiming: 3.5
   magazineAmmoCapacity: 10
   maxReserveAmmo: 30
-  startingReserveAmmo: 15
+  startingReserveAmmo: 5
   reloadingTime: 3
 --- !u!1 &5336235247020592604
 GameObject:

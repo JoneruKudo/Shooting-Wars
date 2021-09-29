@@ -25,9 +25,10 @@ public class Gun : MonoBehaviour
 
     public bool IsMagazineFull() { return currentAmmo == magazineAmmoCapacity; }
 
-    public void AddStartingReserveAmmo()
+    public void LoadAmmo()
     {
         currentAmmoReserve = startingReserveAmmo;
+        currentAmmo = magazineAmmoCapacity;
     }
 
     public void Reload()

@@ -16,6 +16,9 @@ public class PlayerSpawner : MonoBehaviour
     public float timeToRespawn;
     private float deathAnimationTime = 3f;
 
+    bool isDead = false;
+    float deathTimer;
+
     private void Awake()
     {
         instance = this;
@@ -34,6 +37,8 @@ public class PlayerSpawner : MonoBehaviour
                 spawner.SpawnPickup();
             }
         }
+
+        deathTimer = deathAnimationTime + timeToRespawn;
     }
 
     private void SpawnPlayer()
@@ -53,12 +58,42 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator DieCo()
     {
+        isDead = true;
+
         yield return new WaitForSecondsRealtime(deathAnimationTime);
 
-        PhotonNetwork.Destroy(player);
+        //PhotonNetwork.Destroy(player);
+
+        player.GetComponent<PhotonView>().RPC("RpcDisablePlayerBodyOverNetwork", RpcTarget.All);
 
         yield return new WaitForSecondsRealtime(timeToRespawn);
 
-        SpawnPlayer();
+        //SpawnPlayer();
+
+        RespawnPlayer();
+    }
+
+    private void Update()
+    {
+        if (isDead)
+        {
+            deathTimer -= Time.deltaTime;
+
+            Debug.Log((int)deathTimer);
+        }
+    }
+
+    private void RespawnPlayer()
+    {
+        isDead = false;
+
+        deathTimer = deathAnimationTime + timeToRespawn;
+
+        spawnIndex = Random.Range(0, spawnPoints.Length);
+        
+        player.GetComponent<PhotonView>().RPC("RpcRespawn", 
+            RpcTarget.All, 
+            spawnPoints[spawnIndex].position, 
+            spawnPoints[spawnIndex].rotation);
     }
 }

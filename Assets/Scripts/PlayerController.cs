@@ -65,6 +65,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         spawners = FindObjectsOfType<AmmoPickupSpawner>();
 
+        SetPlayerSpawnInfo();
+
+#if UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.Locked;
+#endif
+    }
+
+    private void SetPlayerSpawnInfo()
+    {
         if (photonView.IsMine)
         {
             Camera.main.transform.position = camPosition.position;
@@ -79,8 +88,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             foreach (Gun gun in guns)
             {
-                gun.AddStartingReserveAmmo();
-                gun.Reload();
+                gun.LoadAmmo();
             }
 
             EquipWeapon(0);
@@ -93,14 +101,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
             playerBodyOverNetwork.SetActive(true);
         }
 
-#if UNITY_EDITOR
-        Cursor.lockState = CursorLockMode.Locked;
-#endif
     }
 
     private void Update()
     {
         if (!photonView.IsMine) return;
+
+        if (isDead) return;
 
         MouseInputHandler();
 
@@ -112,7 +119,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            PlayerSpawner.instance.PlayerDie();
+            TakeDamage("", 100);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -144,7 +151,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Reload();
         }
-        
+
         if (Input.GetMouseButtonDown(1))
         {
             if (!isAiming)
@@ -493,7 +500,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0) return;
-        
+
         StartCoroutine(ReloadCor());
     }
 
@@ -574,7 +581,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();
     }
-    
+
     [PunRPC]
     public void RpcDie()
     {
@@ -583,4 +590,32 @@ public class PlayerController : MonoBehaviourPunCallbacks
         playerAnim.SetTrigger("Dead");
     }
 
+    [PunRPC]
+    public void RpcRespawn(Vector3 position, Quaternion rotation)
+    {
+        isDead = false;
+
+        charController.enabled = false;
+        charController.transform.position = position;
+        charController.enabled = true;
+
+        transform.rotation = rotation;
+
+        playerAnim.SetTrigger("Alive");
+        
+        if (!photonView.IsMine)
+        {
+            playerBodyOverNetwork.SetActive(true);
+        }
+
+        SetPlayerSpawnInfo();
+    }
+
+    [PunRPC]
+    public void RpcDisablePlayerBodyOverNetwork()
+    {
+        if (photonView.IsMine) return;
+
+        playerBodyOverNetwork.SetActive(false);
+    }
 }
