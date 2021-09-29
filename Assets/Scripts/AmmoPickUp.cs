@@ -11,25 +11,31 @@ public class AmmoPickUp : MonoBehaviourPun
     public int spawnerIndex;
 
     PlayerController playerCon;
+    PhotonView playerPhotonView;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
+            GetComponent<Collider>().enabled = false;
+
             if (playerCon == null)
             {
                 playerCon = GetPlayerController();
+                playerPhotonView = playerCon.GetComponent<PhotonView>();
             }
            
-            if (playerCon == null)
+            if (playerPhotonView == null)
             {
+                GetComponent<Collider>().enabled = true;
                 return;
             }
             
             other.GetComponent<PhotonView>().RPC("RPCAddAmmo", RpcTarget.All, ammoType, ammoAmount);
 
-            playerCon.GetComponent<PhotonView>().RPC("RPCDestroyPickup", RpcTarget.All, spawnerIndex);  
+            playerPhotonView.RPC("RPCDestroyPickup", RpcTarget.All, spawnerIndex);  
         }
+
     }
 
     public PlayerController GetPlayerController()

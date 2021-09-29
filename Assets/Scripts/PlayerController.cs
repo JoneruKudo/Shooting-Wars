@@ -545,8 +545,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPCDestroyPickup(int spawnerIndex)
     {
-        if (!photonView.IsMine) return;
-
         foreach (AmmoPickupSpawner spawner in spawners)
         {
             if (spawner.spawnerIndex == spawnerIndex)

@@ -28,6 +28,8 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
 
     public void DestroyPickup()
     {
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
+
         StartCoroutine(DestroyCo());
     }
 

@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: spawnTime
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: spawnerIndex
@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: spawnTime
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: spawnerIndex
@@ -5050,7 +5050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: spawnTime
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7875370226293924945, guid: 1644f34ea527b5b4ab9ea02a2a20294f, type: 3}
       propertyPath: pickUpSpawnerNumber
