@@ -101,7 +101,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             playerBodyLocal.SetActive(false);
             playerBodyOverNetwork.SetActive(true);
         }
-
     }
 
     private void Update()
@@ -117,6 +116,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
         weaponCooldownTime += Time.deltaTime;
 
 #if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (HUDController.instance.leaderBoardPanel.activeInHierarchy)
+            {
+                HideLeaderBoard();
+            }
+            else
+            {
+                ShowLeaderBoard();
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -522,6 +533,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         guns[selectedGunIndex].ShowAmmoDisplay();
 
         isReloading = false;
+    }
+
+    public void ShowLeaderBoard()
+    {
+        HUDController.instance.leaderBoardPanel.SetActive(true);
+    }
+
+    public void HideLeaderBoard()
+    {
+        HUDController.instance.leaderBoardPanel.SetActive(false);
     }
 
     [PunRPC]

@@ -32,7 +32,6 @@ public class AmmoPickupSpawner : MonoBehaviourPunCallbacks
 
         if (objInstantiated == null)
         {
-            Debug.LogError("objInstantiated is null");
             return;
         }
 

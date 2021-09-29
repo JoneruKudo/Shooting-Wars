@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
 public class HUDController : MonoBehaviour
@@ -28,6 +29,9 @@ public class HUDController : MonoBehaviour
 
     public GameObject playerControllerUI;
 
+    public GameObject leaderBoardPanel;
+    public GameObject playerInfoOnLeaderboard;
+
     Coroutine warnCor;
 
     private void Start()
@@ -38,6 +42,17 @@ public class HUDController : MonoBehaviour
         reloadingFillBarObject.SetActive(false);
 
         respawningPanel.SetActive(false);
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        Debug.Log(players.Length);
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            GameObject playerInfoInstance = Instantiate(playerInfoOnLeaderboard, playerInfoOnLeaderboard.transform.parent);
+            playerInfoInstance.GetComponent<PlayerInfoLeaderboard>().playerNameText.text = players[i].NickName;
+            playerInfoInstance.SetActive(true);
+        }
     }
 
     public PlayerController GetPlayerController()
@@ -106,6 +121,16 @@ public class HUDController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void ShowLeaderBoard()
+    {
+        leaderBoardPanel.SetActive(true);
+    }
+
+    public void HideLeaderBoard()
+    {
+        leaderBoardPanel.SetActive(false);
     }
 
     public void BackToMainMenu()
