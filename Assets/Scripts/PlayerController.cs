@@ -602,6 +602,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             photonView.RPC("RpcDie", RpcTarget.All);
 
             PlayerSpawner.instance.PlayerDie();
+
+            MatchManager.instance.UpdatePlayerInfoSend(damager, 0, 1);
         }
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();

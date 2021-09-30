@@ -4,10 +4,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class HUDController : MonoBehaviourPunCallbacks
+public class HUDController : MonoBehaviour
 {
     public static HUDController instance;
 
@@ -43,30 +42,39 @@ public class HUDController : MonoBehaviourPunCallbacks
         reloadingFillBarObject.SetActive(false);
 
         respawningPanel.SetActive(false);
-
-        UpdatePlayerLeaderboard();
     }
 
-    private void UpdatePlayerLeaderboard()
+    public void UpdatePlayerLeaderboard()
     {
-        foreach (PlayerInfoLeaderboard leaderboard in leaderboards)
+        if (leaderboards.Count > 0)
         {
-            Destroy(leaderboard.gameObject);
-        }
-
-        Player[] players = PhotonNetwork.PlayerList;
-
-        leaderboards.Clear();
-
-        for (int i = 0; i < players.Length; i++)
-        {
-            GameObject playerInfoInstance = Instantiate(playerInfoOnLeaderboard, playerInfoOnLeaderboard.transform.parent);
-            if (PhotonNetwork.LocalPlayer.NickName == players[i].NickName )
+            foreach (PlayerInfoLeaderboard leaderboard in leaderboards)
             {
-                playerInfoInstance.GetComponent<PlayerInfoLeaderboard>().playerNameText.color = new Color(0f, 255f, 17f, 255f);
+                Destroy(leaderboard.gameObject);
             }
 
-            playerInfoInstance.GetComponent<PlayerInfoLeaderboard>().playerNameText.text = players[i].NickName;
+            leaderboards.Clear();
+        }
+
+        List<PlayerInfo> playerList = MatchManager.instance.allPlayers;
+
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            GameObject playerInfoInstance = Instantiate(playerInfoOnLeaderboard, playerInfoOnLeaderboard.transform.parent);
+
+            PlayerInfoLeaderboard playerInfoLeaderboard = playerInfoInstance.GetComponent<PlayerInfoLeaderboard>();
+
+            if (PhotonNetwork.LocalPlayer.NickName == playerList[i].name )
+            {
+                playerInfoLeaderboard.playerNameText.color = new Color(0f, 255f, 17f, 255f);
+            }
+
+            playerInfoLeaderboard.playerNameText.text = playerList[i].name;
+
+            playerInfoLeaderboard.killsText.text = (playerList[i].kills).ToString();
+
+            playerInfoLeaderboard.deathsText.text = (playerList[i].deaths).ToString();
+
             playerInfoInstance.SetActive(true);
 
             leaderboards.Add(playerInfoInstance.GetComponent<PlayerInfoLeaderboard>());
@@ -143,22 +151,14 @@ public class HUDController : MonoBehaviourPunCallbacks
 
     public void ShowLeaderBoard()
     {
+        UpdatePlayerLeaderboard();
+
         leaderBoardPanel.SetActive(true);
     }
 
     public void HideLeaderBoard()
     {
         leaderBoardPanel.SetActive(false);
-    }
-
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        UpdatePlayerLeaderboard();
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        UpdatePlayerLeaderboard();
     }
 
     public void BackToMainMenu()

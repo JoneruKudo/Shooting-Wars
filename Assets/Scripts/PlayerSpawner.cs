@@ -57,6 +57,8 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator DieCo()
     {
+        MatchManager.instance.UpdatePlayerInfoSend(PhotonNetwork.LocalPlayer.NickName, 1, 1);
+
         HUDController.instance.respawningPanel.SetActive(true);
 
         HUDController.instance.playerControllerUI.SetActive(false);

@@ -498,6 +498,8 @@ MonoBehaviour:
   playerBodyLocal: {fileID: 5336235248031708708}
   spawners:
   - {fileID: 0}
+  kills: 0
+  deaths: 0
 --- !u!95 &1982132439613779878
 Animator:
   serializedVersion: 3
