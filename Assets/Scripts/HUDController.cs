@@ -58,22 +58,46 @@ public class HUDController : MonoBehaviour
 
         List<PlayerInfo> playerList = MatchManager.instance.allPlayers;
 
-        for (int i = 0; i < playerList.Count; i++)
+        List<PlayerInfo> arrangeList = new List<PlayerInfo>();
+
+        while (arrangeList.Count < playerList.Count)
+        {
+            int highestKill = -1;
+            PlayerInfo selectedPlayer = playerList[0];
+
+            foreach (PlayerInfo playerInfo in playerList)
+            {
+                if (!arrangeList.Contains(playerInfo))
+                {
+                    if (playerInfo.kills > highestKill)
+                    {
+                        highestKill = playerInfo.kills;
+                        selectedPlayer = playerInfo;
+                    }
+                }
+            }
+
+            arrangeList.Add(selectedPlayer);
+        }
+
+        for (int i = 0; i < arrangeList.Count; i++)
         {
             GameObject playerInfoInstance = Instantiate(playerInfoOnLeaderboard, playerInfoOnLeaderboard.transform.parent);
 
             PlayerInfoLeaderboard playerInfoLeaderboard = playerInfoInstance.GetComponent<PlayerInfoLeaderboard>();
 
-            if (PhotonNetwork.LocalPlayer.NickName == playerList[i].name )
+            if (PhotonNetwork.LocalPlayer.NickName == arrangeList[i].name )
             {
-                playerInfoLeaderboard.playerNameText.color = new Color(0f, 255f, 17f, 255f);
+                playerInfoLeaderboard.playerNameText.color = Color.cyan;
+                playerInfoLeaderboard.killsText.color = Color.cyan;
+                playerInfoLeaderboard.deathsText.color = Color.cyan;
             }
 
-            playerInfoLeaderboard.playerNameText.text = playerList[i].name;
+            playerInfoLeaderboard.playerNameText.text = arrangeList[i].name;
 
-            playerInfoLeaderboard.killsText.text = (playerList[i].kills).ToString();
+            playerInfoLeaderboard.killsText.text = (arrangeList[i].kills).ToString();
 
-            playerInfoLeaderboard.deathsText.text = (playerList[i].deaths).ToString();
+            playerInfoLeaderboard.deathsText.text = (arrangeList[i].deaths).ToString();
 
             playerInfoInstance.SetActive(true);
 
@@ -151,8 +175,6 @@ public class HUDController : MonoBehaviour
 
     public void ShowLeaderBoard()
     {
-        UpdatePlayerLeaderboard();
-
         leaderBoardPanel.SetActive(true);
     }
 
