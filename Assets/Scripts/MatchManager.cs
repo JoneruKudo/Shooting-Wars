@@ -18,13 +18,21 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
     private int localPlayerIndex;
 
+    public float matchTimeDuration;
+    private float matchTimeInSec;
+    private bool isGameStarting = false;
+    private bool isGameOngoing = false;
+
+    private string playerWon;
+
     public enum EventCode : byte
     {
         NewPlayer,
         PlayerList,
-        UpdatePlayerInfo
+        UpdatePlayerInfo,
+        MatchStart,
+        MatchEnd
     }
-
 
     private void Start()
     {
@@ -33,8 +41,14 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             SceneManager.LoadScene(0);
         }
         else
-        {
+        { 
             NewPlayerSend();
+        }
+
+        if (PhotonNetwork.IsConnected && PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            Debug.Log("sending match start data");
+            MatchStartSend();
         }
     }
 
@@ -67,6 +81,14 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                 case EventCode.UpdatePlayerInfo:
                     UpdatePlayerInfoReceive(data);
+                    break;
+
+                case EventCode.MatchStart:
+                    MatchStartReceive(data);
+                    break;
+
+                case EventCode.MatchEnd:
+                    MatchEndReceive(data);
                     break;
             }
         }
@@ -185,6 +207,81 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
         HUDController.instance.UpdatePlayerLeaderboard();
+    }
+
+    public void MatchStartSend()
+    {
+        object[] package = new object[] { matchTimeDuration, true };
+
+        PhotonNetwork.RaiseEvent(
+            (byte)EventCode.MatchStart,
+            package,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All },
+            new SendOptions { Reliability = true }
+            );
+    }
+
+    public void MatchStartReceive(object[] dataReceived)
+    {
+        matchTimeDuration = (float)dataReceived[0];
+        isGameStarting = (bool)dataReceived[1];
+
+        matchTimeInSec = matchTimeDuration * 60f;
+
+        Debug.Log(isGameStarting + " / " + matchTimeDuration);
+    }
+
+    public void MatchEndSend(string playerName, bool isGameOngoing)
+    {
+        object[] package = new object[] { playerName, isGameOngoing };
+
+        PhotonNetwork.RaiseEvent(
+            (byte)EventCode.MatchEnd,
+            package,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All },
+            new SendOptions { Reliability = true }
+            );
+    }
+
+    public void MatchEndReceive(object[] dataReceived)
+    {
+        playerWon = (string)dataReceived[0];
+        isGameOngoing = (bool)dataReceived[1];
+
+        HUDController.instance.MatchEndHandler(playerWon);
+    }
+
+
+
+    private void Update()
+    {
+        if (isGameStarting)
+        {
+            isGameOngoing = true;
+
+            var timerToDisplay = System.TimeSpan.FromSeconds(matchTimeInSec);
+
+            HUDController.instance.matchTimerText.text = timerToDisplay.Minutes.ToString("00") + ":" 
+                + timerToDisplay.Seconds.ToString("00");
+
+            matchTimeInSec -= Time.deltaTime;
+
+            if (matchTimeInSec <= 0 && isGameOngoing)
+            {
+                matchTimeInSec = 0;
+
+                if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    isGameOngoing = false;
+
+                    HUDController.instance.UpdatePlayerLeaderboard();
+
+                    playerWon = HUDController.instance.arrangeList[0].name;
+
+                    MatchEndSend(playerWon, isGameOngoing);
+                }
+            }
+        }
     }
 }
 

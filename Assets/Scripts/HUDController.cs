@@ -32,6 +32,11 @@ public class HUDController : MonoBehaviour
     public GameObject playerInfoOnLeaderboard;
     private List<PlayerInfoLeaderboard> leaderboards = new List<PlayerInfoLeaderboard>();
 
+    public GameObject matchTimerPanel;
+    public TMP_Text matchTimerText;
+
+    public List<PlayerInfo> arrangeList = new List<PlayerInfo>();
+
     Coroutine warnCor;
 
     private void Start()
@@ -58,7 +63,7 @@ public class HUDController : MonoBehaviour
 
         List<PlayerInfo> playerList = MatchManager.instance.allPlayers;
 
-        List<PlayerInfo> arrangeList = new List<PlayerInfo>();
+        arrangeList.Clear();
 
         while (arrangeList.Count < playerList.Count)
         {
@@ -181,6 +186,11 @@ public class HUDController : MonoBehaviour
     public void HideLeaderBoard()
     {
         leaderBoardPanel.SetActive(false);
+    }
+
+    public void MatchEndHandler(string playerName)
+    {
+        Debug.Log(playerName + " Won!");
     }
 
     public void BackToMainMenu()
