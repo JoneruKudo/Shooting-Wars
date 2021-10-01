@@ -23,6 +23,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private bool isGameStarting = false;
     private bool isGameOngoing = false;
     public bool isMatchEnded = false;
+    public bool isMaxKillReached = false;
 
     private string playerWon;
 
@@ -211,7 +212,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void MatchStartSend()
     {
-        object[] package = new object[] { matchTimeDuration, true };
+        object[] package = new object[] { GameSession.instance.matchTimeDuration, true };
 
         PhotonNetwork.RaiseEvent(
             (byte)EventCode.MatchStart,
@@ -257,6 +258,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     private void Update()
     {
+        if (isMatchEnded) return;
+
         if (isGameStarting)
         {
             var timerToDisplay = System.TimeSpan.FromSeconds(matchTimeInSec);
@@ -269,18 +272,26 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             if (matchTimeInSec <= 0 && isGameOngoing)
             {
                 matchTimeInSec = 0;
-
-                if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                {
-                    isGameOngoing = false;
-
-                    HUDController.instance.UpdatePlayerLeaderboard();
-
-                    playerWon = HUDController.instance.arrangeList[0].name;
-
-                    MatchEndSend(playerWon, false);
-                }
+                EndingMatchHandler();
             }
+            else if (isMaxKillReached)
+            {
+                EndingMatchHandler();
+            }
+        }
+    }
+
+    private void EndingMatchHandler()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            isGameOngoing = false;
+
+            HUDController.instance.UpdatePlayerLeaderboard();
+
+            playerWon = HUDController.instance.arrangeList[0].name;
+
+            MatchEndSend(playerWon, false);
         }
     }
 }

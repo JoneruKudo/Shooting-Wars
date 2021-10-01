@@ -67,15 +67,14 @@ public class PlayerSpawner : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(timeToRespawn);
 
-        //PhotonNetwork.Destroy(player);
-
         player.GetComponent<PhotonView>().RPC("RpcDisablePlayerBodyOverNetwork", RpcTarget.All);
 
         yield return new WaitForSecondsRealtime(1f);
 
-        //SpawnPlayer();
-
-        RespawnPlayer();
+        if (!MatchManager.instance.isMatchEnded)
+        {
+            RespawnPlayer();
+        }
     }
 
     private void Update()

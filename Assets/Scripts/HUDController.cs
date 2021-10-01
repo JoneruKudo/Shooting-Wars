@@ -111,6 +111,11 @@ public class HUDController : MonoBehaviour
             }
 
             arrangeList.Add(selectedPlayer);
+
+            if (highestKill >= GameSession.instance.maxKill)
+            {
+                MatchManager.instance.isMaxKillReached = true;
+            }
         }
 
         for (int i = 0; i < arrangeList.Count; i++)

@@ -8,6 +8,8 @@ public class GameSession : MonoBehaviour
     public static GameSession instance;
 
     public string currentRoomName = "";
+    public float matchTimeDuration;
+    public int maxKill;
 
     private void Awake()
     {

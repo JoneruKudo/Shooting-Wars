@@ -157,12 +157,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CreateRoom("test");
 
+        GameSession.instance.matchTimeDuration = 5f;
+
         isQuickStart = true;
     }
 
     public void QuickCreateRoom()
     {
         PhotonNetwork.CreateRoom("test");
+
+        GameSession.instance.matchTimeDuration = 5f;
     }
 
     public void QuickJoin()
@@ -319,5 +323,41 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void DropDownMatchDuration(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                GameSession.instance.matchTimeDuration = 5f;
+                break;
+
+            case 1:
+                GameSession.instance.matchTimeDuration = 10f;
+                break;
+
+            case 2:
+                GameSession.instance.matchTimeDuration = 15f;
+                break;
+        }
+    }
+
+    public void DropDownMaxKill(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                GameSession.instance.maxKill = 10;
+                break;
+
+            case 1:
+                GameSession.instance.matchTimeDuration = 20;
+                break;
+
+            case 2:
+                GameSession.instance.matchTimeDuration = 30;
+                break;
+        }
     }
 }
