@@ -47,7 +47,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            Debug.Log("sending match start data");
             MatchStartSend();
         }
     }
@@ -228,7 +227,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         matchTimeInSec = matchTimeDuration * 60f;
 
-        Debug.Log(isGameStarting + " / " + matchTimeDuration);
+        isGameOngoing = true;
     }
 
     public void MatchEndSend(string playerName, bool isGameOngoing)
@@ -257,8 +256,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (isGameStarting)
         {
-            isGameOngoing = true;
-
             var timerToDisplay = System.TimeSpan.FromSeconds(matchTimeInSec);
 
             HUDController.instance.matchTimerText.text = timerToDisplay.Minutes.ToString("00") + ":" 
@@ -278,7 +275,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     playerWon = HUDController.instance.arrangeList[0].name;
 
-                    MatchEndSend(playerWon, isGameOngoing);
+                    MatchEndSend(playerWon, false);
                 }
             }
         }

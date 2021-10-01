@@ -15,13 +15,18 @@ public class HUDController : MonoBehaviour
         instance = this;
     }
 
+    public GameObject crossHairImage;
+
+    public GameObject mobileControlPanel;
     public TMP_Text healthText;
     public TMP_Text ammoText;
-    public TMP_Text warningText;
     public Image reloadingFillBarImage;
     public GameObject reloadingFillBarObject;
     private float originalReloadingImageWidth;
     private float originalReloadingImageHeight;
+
+    public GameObject warningPanel;
+    public TMP_Text warningText;
 
     public GameObject respawningPanel;
     public TMP_Text respawningText;
@@ -37,6 +42,10 @@ public class HUDController : MonoBehaviour
 
     public List<PlayerInfo> arrangeList = new List<PlayerInfo>();
 
+    public GameObject endMatchPanel;
+    public TMP_Text winText;
+    public TMP_Text loseText;
+
     Coroutine warnCor;
 
     private void Start()
@@ -44,9 +53,25 @@ public class HUDController : MonoBehaviour
         originalReloadingImageWidth = reloadingFillBarImage.rectTransform.sizeDelta.x;
         originalReloadingImageHeight = reloadingFillBarImage.rectTransform.sizeDelta.y;
 
+        CloseAllPanels();
+
         reloadingFillBarObject.SetActive(false);
 
+        crossHairImage.SetActive(true);
+        mobileControlPanel.SetActive(true);
+        warningPanel.SetActive(true);
+        matchTimerPanel.SetActive(true);
+    }
+
+    private void CloseAllPanels()
+    {
+        crossHairImage.SetActive(false);
+        mobileControlPanel.SetActive(false);
+        warningPanel.SetActive(false);
         respawningPanel.SetActive(false);
+        leaderBoardPanel.SetActive(false);
+        matchTimerPanel.SetActive(false);
+        endMatchPanel.SetActive(false);
     }
 
     public void UpdatePlayerLeaderboard()
@@ -190,11 +215,36 @@ public class HUDController : MonoBehaviour
 
     public void MatchEndHandler(string playerName)
     {
-        Debug.Log(playerName + " Won!");
+        CloseAllPanels();
+
+        leaderBoardPanel.SetActive(true);
+        endMatchPanel.SetActive(true);
+
+        if (playerName == PhotonNetwork.LocalPlayer.NickName)
+        {
+            winText.gameObject.SetActive(true);
+        }
+        else
+        {
+            loseText.gameObject.SetActive(false);
+        }
+    }
+
+    public void LobbyMenu()
+    {
+        GameSession.instance.SetRoomName(PhotonNetwork.CurrentRoom.Name);
+
+        PhotonNetwork.AutomaticallySyncScene = false;
+
+        PhotonNetwork.DestroyAll(true);
+
+        SceneManager.LoadScene(0);
     }
 
     public void BackToMainMenu()
     {
+        GameSession.instance.SetRoomName("");
+
         PhotonNetwork.AutomaticallySyncScene = false;
 
         PhotonNetwork.DestroyAll(true);

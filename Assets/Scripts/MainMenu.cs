@@ -64,6 +64,28 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
             PhotonNetwork.ConnectUsingSettings();
         }
+        else
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                CloseAllScreen();
+
+                lobbyScreen.SetActive(true);
+
+                lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
+
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    startGameButton.SetActive(true);
+                }
+                else
+                {
+                    startGameButton.SetActive(false);
+                }
+
+                UpdatePlayersNameInLobby();
+            }
+        }
 
         testButtons.SetActive(isTestingMode ? true : false);
     }
