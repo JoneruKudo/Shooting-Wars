@@ -22,6 +22,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private float matchTimeInSec;
     private bool isGameStarting = false;
     private bool isGameOngoing = false;
+    public bool isMatchEnded = false;
 
     private string playerWon;
 
@@ -246,6 +247,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         playerWon = (string)dataReceived[0];
         isGameOngoing = (bool)dataReceived[1];
+
+        isMatchEnded = true;
 
         HUDController.instance.MatchEndHandler(playerWon);
     }

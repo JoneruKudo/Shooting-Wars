@@ -36,6 +36,7 @@ public class HUDController : MonoBehaviour
     public GameObject leaderBoardPanel;
     public GameObject playerInfoOnLeaderboard;
     private List<PlayerInfoLeaderboard> leaderboards = new List<PlayerInfoLeaderboard>();
+    public GameObject leaderBoardButton;
 
     public GameObject matchTimerPanel;
     public TMP_Text matchTimerText;
@@ -61,6 +62,7 @@ public class HUDController : MonoBehaviour
         mobileControlPanel.SetActive(true);
         warningPanel.SetActive(true);
         matchTimerPanel.SetActive(true);
+        leaderBoardButton.SetActive(true);
     }
 
     private void CloseAllPanels()
@@ -72,6 +74,7 @@ public class HUDController : MonoBehaviour
         leaderBoardPanel.SetActive(false);
         matchTimerPanel.SetActive(false);
         endMatchPanel.SetActive(false);
+        leaderBoardButton.SetActive(false);
     }
 
     public void UpdatePlayerLeaderboard()
@@ -206,11 +209,13 @@ public class HUDController : MonoBehaviour
     public void ShowLeaderBoard()
     {
         leaderBoardPanel.SetActive(true);
+        leaderBoardButton.SetActive(false);
     }
 
     public void HideLeaderBoard()
     {
         leaderBoardPanel.SetActive(false);
+        leaderBoardButton.SetActive(true);
     }
 
     public void MatchEndHandler(string playerName)
@@ -226,25 +231,12 @@ public class HUDController : MonoBehaviour
         }
         else
         {
-            loseText.gameObject.SetActive(false);
+            loseText.gameObject.SetActive(true);
         }
-    }
-
-    public void LobbyMenu()
-    {
-        GameSession.instance.SetRoomName(PhotonNetwork.CurrentRoom.Name);
-
-        PhotonNetwork.AutomaticallySyncScene = false;
-
-        PhotonNetwork.DestroyAll(true);
-
-        SceneManager.LoadScene(0);
     }
 
     public void BackToMainMenu()
     {
-        GameSession.instance.SetRoomName("");
-
         PhotonNetwork.AutomaticallySyncScene = false;
 
         PhotonNetwork.DestroyAll(true);

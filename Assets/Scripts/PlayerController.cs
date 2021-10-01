@@ -214,6 +214,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 #endif
 
+        if (MatchManager.instance.isMatchEnded) return;
+
         transform.rotation = Quaternion.Euler(
             transform.rotation.eulerAngles.x,
             transform.rotation.eulerAngles.y + mouseInput.x,
@@ -249,6 +251,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void MovementHandler()
     {
+        if (MatchManager.instance.isMatchEnded) return;
+
         float yVelocity = movement.y;
 
         //moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
