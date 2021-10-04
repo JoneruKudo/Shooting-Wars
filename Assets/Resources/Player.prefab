@@ -217,7 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSFX: {fileID: 8300000, guid: 2c4b8a2386bab1240bfe1348ff4d7b13, type: 3}
   reloadSFX: {fileID: 8300000, guid: a51ee064a8a16644fb12661fe9899bb8, type: 3}
   ammoType: 1
   damage: 10
@@ -504,6 +503,10 @@ MonoBehaviour:
   kills: 0
   deaths: 0
   audioSource: {fileID: 1801448659}
+  gunfireSFX:
+  - {fileID: 3052923753332590509, guid: b10014d5db03caa41b1fe42dc291f282, type: 3}
+  - {fileID: 3052923753332590509, guid: fc6077c96052b7b4ea4b657bde1285f2, type: 3}
+  - {fileID: 3052923753332590509, guid: 07f0563a0f8e9214b97a6f658e640544, type: 3}
 --- !u!95 &1982132439613779878
 Animator:
   serializedVersion: 3
@@ -993,7 +996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSFX: {fileID: 8300000, guid: e568960f86469354ebde2392a0f19699, type: 3}
   reloadSFX: {fileID: 8300000, guid: 24ec803e10c114c47b5f033725ccbe0d, type: 3}
   ammoType: 0
   damage: 15
@@ -1410,7 +1412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSFX: {fileID: 8300000, guid: a68ed05950655fa4b924e1adafe59cfb, type: 3}
   reloadSFX: {fileID: 8300000, guid: e84da623bd75c0a4e9a50ac1f90d25bd, type: 3}
   ammoType: 2
   damage: 50

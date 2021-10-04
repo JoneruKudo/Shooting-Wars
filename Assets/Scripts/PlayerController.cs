@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public int deaths;
 
     public AudioSource audioSource;
+    public GameObject[] gunfireSFX;
 
     public static PlayerController instance;
 
@@ -333,13 +334,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
             return;
         }
 
-        audioSource.PlayOneShot(guns[selectedGunIndex].shootSFX);
-
         guns[selectedGunIndex].ReduceCurrentAmmo();
 
         guns[selectedGunIndex].ShowAmmoDisplay();
 
         GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
+            networkMuzzlePoint.position,
+            networkMuzzlePoint.rotation);
+
+        GameObject gunfireSFXInstance = PhotonNetwork.Instantiate(gunfireSFX[selectedGunIndex].name,
             networkMuzzlePoint.position,
             networkMuzzlePoint.rotation);
 
@@ -398,8 +401,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 break;
             }
 
-            audioSource.PlayOneShot(guns[selectedGunIndex].shootSFX);
-
             guns[selectedGunIndex].ReduceCurrentAmmo();
 
             guns[selectedGunIndex].ShowAmmoDisplay();
@@ -407,6 +408,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
             GameObject muzzleInstance = PhotonNetwork.Instantiate(muzzleFlashVFX.name,
                 networkMuzzlePoint.position,
                 networkMuzzlePoint.rotation);
+
+            GameObject gunfireSFXInstance = PhotonNetwork.Instantiate(gunfireSFX[selectedGunIndex].name,
+            networkMuzzlePoint.position,
+            networkMuzzlePoint.rotation);
 
             if (photonView.IsMine)
             {
@@ -457,7 +462,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void StopShooting()
     {
-        StopCoroutine(firingCo);
+        if (firingCo != null)
+        {
+            StopCoroutine(firingCo);
+        }
     }
 
     private void EquipWeapon(int gunIndex)
