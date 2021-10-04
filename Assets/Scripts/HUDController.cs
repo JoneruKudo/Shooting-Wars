@@ -47,6 +47,9 @@ public class HUDController : MonoBehaviour
     public TMP_Text winText;
     public TMP_Text loseText;
 
+    public GameObject loadingPanel;
+    public TMP_Text loadingText;
+
     Coroutine warnCor;
 
     private void Start()
@@ -75,6 +78,7 @@ public class HUDController : MonoBehaviour
         matchTimerPanel.SetActive(false);
         endMatchPanel.SetActive(false);
         leaderBoardButton.SetActive(false);
+        loadingPanel.SetActive(false);
     }
 
     public void UpdatePlayerLeaderboard()
@@ -242,6 +246,12 @@ public class HUDController : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        CloseAllPanels();
+
+        loadingPanel.SetActive(true);
+
+        loadingText.text = "Back to Main Menu...";
+
         PhotonNetwork.AutomaticallySyncScene = false;
 
         PhotonNetwork.DestroyAll(true);
