@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public AudioSource audioSource;
     public GameObject[] gunfireSFX;
+    public AudioClip ammoPickUpSFX;
 
     public GameObject deathSFX;
 
@@ -574,6 +575,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void RPCAddAmmo(AmmoType ammoType, int amount)
     {
         if (!photonView.IsMine) return;
+
+        audioSource.PlayOneShot(ammoPickUpSFX);
 
         foreach (Gun gun in guns)
         {

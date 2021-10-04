@@ -146,7 +146,6 @@ MonoBehaviour:
   ammoAmount: 30
   ammoType: 1
   spawnerIndex: 0
-  ammoPickupSFX: {fileID: 8384812677614295902, guid: b25ddb05dbf051944ad1d244d2b827bb, type: 3}
 --- !u!114 &2436895910232209974
 MonoBehaviour:
   m_ObjectHideFlags: 0
