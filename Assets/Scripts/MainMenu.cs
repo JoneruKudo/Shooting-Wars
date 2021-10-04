@@ -153,6 +153,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
 
+        startGameButton.GetComponent<Button>().interactable = false;
+
         UpdatePlayersNameInLobby();
 
         if (isTestingMode && isQuickStart)
@@ -201,6 +203,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
+        maxKillsText.text = "Max Kills : " + GameSession.instance.maxKill.ToString();
+
+        matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
+
         if (PhotonNetwork.IsMasterClient)
         {
             startGameButton.SetActive(true);
@@ -216,11 +222,30 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         UpdatePlayersNameInLobby();
+
+        CheckPlayersCountInCurrentRoom();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayersNameInLobby();
+
+        CheckPlayersCountInCurrentRoom();
+    }
+
+    private void CheckPlayersCountInCurrentRoom()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            {
+                startGameButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                startGameButton.GetComponent<Button>().interactable = false;
+            }
+        }
     }
 
     private void UpdatePlayersNameInLobby()
