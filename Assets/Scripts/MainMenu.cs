@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public GameObject createRoomScreen;
     public TMP_InputField createRoomNameInputField;
+    public GameObject roomNameEmptyError;
 
     public GameObject lobbyScreen;
     public TMP_Text lobbyRoomNameText;
@@ -107,7 +108,13 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(createRoomNameInputField.text)) return;
+        if (string.IsNullOrEmpty(createRoomNameInputField.text))
+        {
+            roomNameEmptyError.SetActive(true);
+            return;
+        }
+
+        roomNameEmptyError.SetActive(false);
 
         PhotonNetwork.CreateRoom(createRoomNameInputField.text);
 
