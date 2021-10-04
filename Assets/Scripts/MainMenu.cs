@@ -28,6 +28,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public GameObject lobbyScreen;
     public TMP_Text lobbyRoomNameText;
+    public TMP_Text playerCountText;
+    public TMP_Text maxKillsText;
+    public TMP_Text matchDurationText;
 
     public GameObject findRoomScreen;
     public GameObject roomFoundObject;
@@ -146,6 +149,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
+        maxKillsText.text = "Max Kills : " + GameSession.instance.maxKill.ToString();
+
+        matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
+
         UpdatePlayersNameInLobby();
 
         if (isTestingMode && isQuickStart)
@@ -250,6 +257,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
             playerNames[i].fontStyle = FontStyles.Italic;
             playerNames[i].color = new Color(255f, 255f, 255, 60f);
         }
+
+        playerCountText.text = "No. of Players : " + playerList.Length;
 
     }
 
@@ -359,11 +368,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
                 break;
 
             case 1:
-                GameSession.instance.matchTimeDuration = 20;
+                GameSession.instance.maxKill = 20;
                 break;
 
             case 2:
-                GameSession.instance.matchTimeDuration = 30;
+                GameSession.instance.maxKill = 30;
                 break;
         }
     }
