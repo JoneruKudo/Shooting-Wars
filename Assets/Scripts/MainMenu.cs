@@ -166,6 +166,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+
         PhotonNetwork.LoadLevel(mapNameToLoad);
     }
 
@@ -180,7 +182,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void QuickCreateRoom()
     {
-        PhotonNetwork.CreateRoom("test");
+        RoomOptions roomOptions = new RoomOptions();
+
+        roomOptions.MaxPlayers = 10;
+
+        PhotonNetwork.CreateRoom("test", roomOptions);
 
         GameSession.instance.matchTimeDuration = 5f;
     }
@@ -350,7 +356,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         roomButtons.Clear();
 
         for (int i = 0; i < roomList.Count; i++)
-        {
+        { 
             if (!roomList[i].RemovedFromList)
             {
                 GameObject roomFoundInstance = Instantiate(roomFoundObject, roomFoundObject.transform.parent);
