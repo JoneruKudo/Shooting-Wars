@@ -1413,7 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reloadSFX: {fileID: 8300000, guid: e84da623bd75c0a4e9a50ac1f90d25bd, type: 3}
+  reloadSFX: {fileID: 8300000, guid: e8b291a581f91a0499e4d8b296b7022c, type: 3}
   ammoType: 2
   damage: 50
   weaponRange: 500
@@ -1424,7 +1424,7 @@ MonoBehaviour:
   magazineAmmoCapacity: 10
   maxReserveAmmo: 30
   startingReserveAmmo: 5
-  reloadingTime: 3.5
+  reloadingTime: 3
 --- !u!1 &5336235247020592604
 GameObject:
   m_ObjectHideFlags: 0
