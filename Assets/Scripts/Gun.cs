@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public AudioClip shootSFX;
+    public AudioClip reloadSFX;
     public AmmoType ammoType;
     public int damage;
     public float weaponRange;

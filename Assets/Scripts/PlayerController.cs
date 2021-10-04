@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public int kills;
     public int deaths;
 
+    public AudioSource audioSource;
+
     public static PlayerController instance;
 
     private void Awake()
@@ -331,6 +333,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             return;
         }
 
+        audioSource.PlayOneShot(guns[selectedGunIndex].shootSFX);
+
         guns[selectedGunIndex].ReduceCurrentAmmo();
 
         guns[selectedGunIndex].ShowAmmoDisplay();
@@ -393,6 +397,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 break;
             }
+
+            audioSource.PlayOneShot(guns[selectedGunIndex].shootSFX);
 
             guns[selectedGunIndex].ReduceCurrentAmmo();
 
@@ -521,6 +527,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         if (guns[selectedGunIndex].GetCurrentAmmoReserve() <= 0) return;
+
+        audioSource.PlayOneShot(guns[selectedGunIndex].reloadSFX);
 
         StartCoroutine(ReloadCor());
     }

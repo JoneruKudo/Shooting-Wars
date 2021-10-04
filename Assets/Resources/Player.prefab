@@ -217,6 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSFX: {fileID: 8300000, guid: 2c4b8a2386bab1240bfe1348ff4d7b13, type: 3}
+  reloadSFX: {fileID: 8300000, guid: a51ee064a8a16644fb12661fe9899bb8, type: 3}
   ammoType: 1
   damage: 10
   weaponRange: 100
@@ -227,7 +229,7 @@ MonoBehaviour:
   magazineAmmoCapacity: 30
   maxReserveAmmo: 120
   startingReserveAmmo: 30
-  reloadingTime: 2
+  reloadingTime: 2.5
 --- !u!1 &5336235245953504213
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +427,7 @@ GameObject:
   - component: {fileID: 5336235246039129482}
   - component: {fileID: 5336235246039129481}
   - component: {fileID: 1982132439613779878}
+  - component: {fileID: 1801448659}
   - component: {fileID: 5336235246039129483}
   - component: {fileID: 242368603085174241}
   - component: {fileID: 7050233635603934925}
@@ -500,6 +503,7 @@ MonoBehaviour:
   - {fileID: 0}
   kills: 0
   deaths: 0
+  audioSource: {fileID: 1801448659}
 --- !u!95 &1982132439613779878
 Animator:
   serializedVersion: 3
@@ -519,6 +523,102 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!82 &1801448659
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336235246039129480}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -3363305151517488917, guid: b125c9ab1ddd1dc4982445f3b7911517, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.75
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!143 &5336235246039129483
 CharacterController:
   m_ObjectHideFlags: 0
@@ -893,6 +993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSFX: {fileID: 8300000, guid: e568960f86469354ebde2392a0f19699, type: 3}
+  reloadSFX: {fileID: 8300000, guid: 24ec803e10c114c47b5f033725ccbe0d, type: 3}
   ammoType: 0
   damage: 15
   weaponRange: 150
@@ -1308,6 +1410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095a61fdab79f2489b75133ee8862b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSFX: {fileID: 8300000, guid: a68ed05950655fa4b924e1adafe59cfb, type: 3}
+  reloadSFX: {fileID: 8300000, guid: e84da623bd75c0a4e9a50ac1f90d25bd, type: 3}
   ammoType: 2
   damage: 50
   weaponRange: 500
@@ -1318,7 +1422,7 @@ MonoBehaviour:
   magazineAmmoCapacity: 10
   maxReserveAmmo: 30
   startingReserveAmmo: 5
-  reloadingTime: 3
+  reloadingTime: 3.5
 --- !u!1 &5336235247020592604
 GameObject:
   m_ObjectHideFlags: 0
