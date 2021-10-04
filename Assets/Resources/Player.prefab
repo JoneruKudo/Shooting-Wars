@@ -507,6 +507,7 @@ MonoBehaviour:
   - {fileID: 3052923753332590509, guid: b10014d5db03caa41b1fe42dc291f282, type: 3}
   - {fileID: 3052923753332590509, guid: fc6077c96052b7b4ea4b657bde1285f2, type: 3}
   - {fileID: 3052923753332590509, guid: 07f0563a0f8e9214b97a6f658e640544, type: 3}
+  deathSFX: {fileID: 8384812677614295902, guid: d7bc60f1b68fa2649a7cdf35b2eb9981, type: 3}
 --- !u!95 &1982132439613779878
 Animator:
   serializedVersion: 3

@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public AudioSource audioSource;
     public GameObject[] gunfireSFX;
 
+    public GameObject deathSFX;
+
     public static PlayerController instance;
 
     private void Awake()
@@ -624,6 +626,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             PlayerSpawner.instance.PlayerDie();
 
             MatchManager.instance.UpdatePlayerInfoSend(damager, 0, 1);
+
+            PhotonNetwork.Instantiate(deathSFX.name, transform.position, Quaternion.identity);
         }
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();

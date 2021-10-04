@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3052923753332590508}
   - component: {fileID: 3052923753332590505}
   - component: {fileID: 3052923753332590510}
+  - component: {fileID: 3825689669642823745}
   m_Layer: 0
   m_Name: Machine Gun SFX
   m_TagString: Untagged
@@ -168,3 +169,16 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3825689669642823745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052923753332590509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390914b4b1d9e5d408315a5c97188f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 2
