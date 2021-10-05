@@ -29,4 +29,14 @@ public class GameSession : MonoBehaviour
         currentRoomName = name;
     }
 
+    public string GetPlayerName()
+    {
+        return PlayerPrefs.GetString("Player Name");
+    }
+
+    public void SetPlayerName(string playerName)
+    {
+        PlayerPrefs.SetString("Player Name", playerName);
+    }
+
 }

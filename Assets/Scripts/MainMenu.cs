@@ -51,19 +51,14 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public Slider musicSlider;
     public Slider sfxSlider;
     public Slider cameraSlider;
-    public TMP_InputField playerNameInputField;
+    public TMP_InputField newPlayerNameInputField;
+
+    public GameObject setPlayerNameScreen;
+    public TMP_InputField setPlayerNameInputField;
+    public GameObject playerNameEmptyError;
 
     private void Start()
     {
-        if (PhotonNetwork.NickName.Length <= 0)
-        {
-            PhotonNetwork.NickName = "Player " + Random.Range(1, 1000);
-        }
-
-        CloseAllScreen();
-
-        mainMenuScreen.SetActive(true);
-
         if (!PhotonNetwork.IsConnected)
         {
             CloseAllScreen();
@@ -87,6 +82,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         findRoomScreen.SetActive(false);
         errorScreen.SetActive(false);
         settingsScreen.SetActive(false);
+        setPlayerNameScreen.SetActive(false);
     }
 
     public override void OnConnectedToMaster()
@@ -100,8 +96,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        CloseAllScreen();
-        mainMenuScreen.SetActive(true);
+        if (string.IsNullOrEmpty(GameSession.instance.GetPlayerName()))
+        {
+            CloseAllScreen();
+
+            setPlayerNameScreen.SetActive(true);
+        }
+        else
+        {
+            PhotonNetwork.NickName = GameSession.instance.GetPlayerName();
+
+            ReturnToMainMenu();
+        }
     }
 
     public void CreateRoomScreen()
@@ -374,16 +380,40 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    public void SetPlayerName()
+    {
+        if (string.IsNullOrEmpty(setPlayerNameInputField.text))
+        {
+            playerNameEmptyError.SetActive(true);
+            return;
+        }
+
+        GameSession.instance.SetPlayerName(setPlayerNameInputField.text);
+
+        PhotonNetwork.NickName = GameSession.instance.GetPlayerName();
+
+        ReturnToMainMenu();
+    }
+
     public void OpenSettings()
     {
         CloseAllScreen();
 
         settingsScreen.SetActive(true);
+
+        newPlayerNameInputField.placeholder.GetComponent<TMP_Text>().text = GameSession.instance.GetPlayerName();
     }
 
     public void ApplySettings()
     {
-        Debug.Log("applied");
+        if (!string.IsNullOrEmpty(newPlayerNameInputField.text))
+        {
+            GameSession.instance.SetPlayerName(newPlayerNameInputField.text);
+
+            PhotonNetwork.NickName = GameSession.instance.GetPlayerName();
+        }
+
+        ReturnToMainMenu();
     }
 
     public void DropDownMatchDuration(int value)
