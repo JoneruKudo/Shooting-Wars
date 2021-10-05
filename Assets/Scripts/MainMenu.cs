@@ -47,6 +47,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public TMP_Text[] playerNames;
 
+    public GameObject settingsScreen;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+    public Slider cameraSlider;
+    public TMP_InputField playerNameInputField;
+
     private void Start()
     {
         if (PhotonNetwork.NickName.Length <= 0)
@@ -80,6 +86,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         lobbyScreen.SetActive(false);
         findRoomScreen.SetActive(false);
         errorScreen.SetActive(false);
+        settingsScreen.SetActive(false);
     }
 
     public override void OnConnectedToMaster()
@@ -367,9 +374,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    public void QuitGame()
+    public void OpenSettings()
     {
-        Application.Quit();
+        CloseAllScreen();
+
+        settingsScreen.SetActive(true);
+    }
+
+    public void ApplySettings()
+    {
+        Debug.Log("applied");
     }
 
     public void DropDownMatchDuration(int value)
@@ -406,5 +420,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
                 GameSession.instance.maxKill = 30;
                 break;
         }
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
