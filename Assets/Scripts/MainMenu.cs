@@ -18,6 +18,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
         instance = this;
     }
 
+    public GameObject tutorialCanvas;
+    public Transform cameraPositionInMainMenu;
+    public Transform cameraPositionInTutorial;
+    private Camera mainCam;
+
     public bool isTestingMode = false;
     public GameObject testButtons;
     private bool isQuickStart = false;
@@ -63,6 +68,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        mainCam = Camera.main;
+
         if (!PhotonNetwork.IsConnected)
         {
             CloseAllScreen();
@@ -75,6 +82,20 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
 
         testButtons.SetActive(isTestingMode ? true : false);
+
+        SetCameraPositionToMainMenu();
+    }
+
+    private void SetCameraPositionToMainMenu()
+    {
+        mainCam.transform.position = cameraPositionInMainMenu.position;
+        mainCam.transform.rotation = cameraPositionInMainMenu.rotation;
+    }
+
+    private void SetCameraPositionToTutorial()
+    {
+        mainCam.transform.position = cameraPositionInTutorial.position;
+        mainCam.transform.rotation = cameraPositionInTutorial.rotation;
     }
 
     public void CloseAllScreen()
@@ -87,6 +108,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         errorScreen.SetActive(false);
         settingsScreen.SetActive(false);
         setPlayerNameScreen.SetActive(false);
+        tutorialCanvas.SetActive(false);
     }
 
     public override void OnConnectedToMaster()
@@ -448,6 +470,22 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void SetCameraSensitivityOnMobileInputSettings(float amount)
     {
         GameSession.instance.SetCameraSensitivityOnMobileInputSettings(amount);
+    }
+
+    public void OpenTutorialCanvas()
+    {
+        CloseAllScreen();
+
+        tutorialCanvas.SetActive(true);
+
+        SetCameraPositionToTutorial();
+    }
+
+    public void CloseTutorialCanvas()
+    {
+        SetCameraPositionToMainMenu();
+
+        ReturnToMainMenu();
     }
 
     public void DropDownMatchDuration(int value)
