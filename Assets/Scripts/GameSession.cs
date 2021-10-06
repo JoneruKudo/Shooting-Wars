@@ -132,11 +132,11 @@ public class GameSession : MonoBehaviour
 
     public void CancelSettings()
     {
-        SetMusicVolume(GetMusicVolume());
+        SetMusicVolumeOnAudioMixer(GetMusicVolume());
 
-        SetSFXVolume(GetSFXVolume());
+        SetSFXVolumeOnAudioMixer(GetSFXVolume());
 
-        SetCameraSensitivity(GetCameraSensitivity());
+        SetCameraSensitivityOnMobileInputSettings(GetCameraSensitivity());
     }
 
 

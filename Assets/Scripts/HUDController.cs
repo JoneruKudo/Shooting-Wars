@@ -17,6 +17,8 @@ public class HUDController : MonoBehaviour
 
     public GameObject crossHairImage;
 
+    public GameObject tutorialCanvas;
+
     public GameObject mobileControlPanel;
     public TMP_Text healthText;
     public TMP_Text ammoText;
@@ -291,6 +293,24 @@ public class HUDController : MonoBehaviour
     public void CloseOptionMenu()
     {
         optionsPanel.SetActive(false);
+    }
+
+    public void OpenTutorialCanvas()
+    {
+        tutorialCanvas.SetActive(true);
+
+        matchTimerPanel.SetActive(false);
+
+        leaderBoardButton.SetActive(false);
+    }
+
+    public void CloseTutorialCanvas()
+    {
+        tutorialCanvas.SetActive(false);
+
+        matchTimerPanel.SetActive(true);
+
+        leaderBoardButton.SetActive(true);
     }
 
     public void SetMusicVolumeOnAudioMixer(float amount)

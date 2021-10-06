@@ -254,8 +254,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         HUDController.instance.MatchEndHandler(playerWon);
     }
 
-
-
     private void Update()
     {
         if (isMatchEnded) return;
