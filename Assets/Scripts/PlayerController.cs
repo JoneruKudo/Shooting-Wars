@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void MouseInputHandler()
     {
-        mouseInput = bl_TouchPad.GetInputSmooth();
+        mouseInput = bl_TouchPad.GetInputSmooth(); 
 
 #if UNITY_EDITOR
         if (activateUnityEditorControls == false) return;

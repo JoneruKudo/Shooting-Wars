@@ -50,6 +50,12 @@ public class HUDController : MonoBehaviour
     public GameObject loadingPanel;
     public TMP_Text loadingText;
 
+    public GameObject optionsPanel;
+    public GameObject settingsPanel;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+    public Slider cameraSlider;
+
     Coroutine warnCor;
 
     private void Start()
@@ -79,6 +85,8 @@ public class HUDController : MonoBehaviour
         endMatchPanel.SetActive(false);
         leaderBoardButton.SetActive(false);
         loadingPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
     public void UpdatePlayerLeaderboard()
@@ -242,6 +250,62 @@ public class HUDController : MonoBehaviour
         {
             loseText.gameObject.SetActive(true);
         }
+    }
+
+    public void OpenSettings()
+    {
+        optionsPanel.SetActive(false);
+
+        settingsPanel.SetActive(true);
+
+        musicSlider.value = GameSession.instance.GetMusicVolume();
+
+        sfxSlider.value = GameSession.instance.GetSFXVolume();
+
+        cameraSlider.value = GameSession.instance.GetCameraSensitivity();
+    }
+
+    public void ApplySettings()
+    {
+        GameSession.instance.ApplySettings();
+
+        settingsPanel.SetActive(false);
+    }
+
+    public void CancelSettings()
+    {
+        GameSession.instance.CancelSettings();
+
+        settingsPanel.SetActive(false);
+
+        optionsPanel.SetActive(true);
+    }
+
+    public void OpenOptionMenu()
+    {
+        optionsPanel.SetActive(true);
+
+        HideLeaderBoard();
+    }
+
+    public void CloseOptionMenu()
+    {
+        optionsPanel.SetActive(false);
+    }
+
+    public void SetMusicVolumeOnAudioMixer(float amount)
+    {
+        GameSession.instance.audioMixer.SetFloat("Music", amount);
+    }
+
+    public void SetSFXVolumeOnAudioMixer(float amount)
+    {
+        GameSession.instance.audioMixer.SetFloat("SFX", amount);
+    }
+
+    public void SetCameraSensitivityOnMobileInputSettings(float amount)
+    {
+        GameSession.instance.SetCameraSensitivityOnMobileInputSettings(amount);
     }
 
     public void BackToMainMenu()

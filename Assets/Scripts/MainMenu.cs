@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System;
+using Lovatto.MobileInput;
+
 
 public class MainMenu : MonoBehaviourPunCallbacks
 {
@@ -58,8 +60,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public GameObject setPlayerNameScreen;
     public TMP_InputField setPlayerNameInputField;
     public GameObject playerNameEmptyError;
-
-    public AudioMixer audioMixer;
 
     private void Start()
     {
@@ -410,6 +410,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         musicSlider.value = GameSession.instance.GetMusicVolume();
 
         sfxSlider.value = GameSession.instance.GetSFXVolume();
+
+        cameraSlider.value = GameSession.instance.GetCameraSensitivity();
     }
 
     public void ApplySettings()
@@ -421,34 +423,31 @@ public class MainMenu : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = GameSession.instance.GetPlayerName();
         }
 
-        audioMixer.GetFloat("Music", out float musicVol);
-
-        GameSession.instance.SetMusicVolume(musicVol);
-
-        audioMixer.GetFloat("SFX", out float sfxVol);
-
-        GameSession.instance.SetSFXVolume(sfxVol);
+        GameSession.instance.ApplySettings();
 
         ReturnToMainMenu();
     }
 
     public void CancelSettings()
     {
-        SetMusicVolume(GameSession.instance.GetMusicVolume());
-
-        SetSFXVolume(GameSession.instance.GetSFXVolume());
+        GameSession.instance.CancelSettings();
 
         ReturnToMainMenu();
     }
 
-    public void SetMusicVolume(float amount)
+    public void SetMusicVolumeOnAudioMixer(float amount)
     {
-        audioMixer.SetFloat("Music", amount);
+        GameSession.instance.audioMixer.SetFloat("Music", amount);
     }
 
-    public void SetSFXVolume(float amount)
+    public void SetSFXVolumeOnAudioMixer(float amount)
     {
-        audioMixer.SetFloat("SFX", amount);
+        GameSession.instance.audioMixer.SetFloat("SFX", amount);
+    }
+
+    public void SetCameraSensitivityOnMobileInputSettings(float amount)
+    {
+        GameSession.instance.SetCameraSensitivityOnMobileInputSettings(amount);
     }
 
     public void DropDownMatchDuration(int value)

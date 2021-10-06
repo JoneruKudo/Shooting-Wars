@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using Lovatto.MobileInput;
 
 public class GameSession : MonoBehaviour
 {
@@ -14,12 +16,14 @@ public class GameSession : MonoBehaviour
 
     public float defaultMusicVolume;
     public float defaultSFXVolume;
-    public float defaultCameraSensitivity;
+    public float defaultCameraSensitivity; 
 
     private static string PLAYER_NAME = "Player Name";
     private static string MUSIC_VOLUME = "Music Volume";
     private static string SFX_VOLUME = "SFX Volume";
     private static string CAMERA_SENSITIVITY = "Camera Sensitivity";
+
+    public AudioMixer audioMixer;
 
     private void Awake()
     {
@@ -36,7 +40,7 @@ public class GameSession : MonoBehaviour
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey(MUSIC_VOLUME))
+        if (!PlayerPrefs.HasKey(MUSIC_VOLUME) || !PlayerPrefs.HasKey(SFX_VOLUME) || !PlayerPrefs.HasKey(CAMERA_SENSITIVITY))
         {
             SetPlayerPrefsToDefault();
         }
@@ -48,20 +52,22 @@ public class GameSession : MonoBehaviour
 
     private void SetPlayerPrefs()
     {
-        MainMenu.instance.audioMixer.SetFloat("Music", GetMusicVolume());
+        audioMixer.SetFloat("Music", GetMusicVolume());
 
-        MainMenu.instance.audioMixer.SetFloat("SFX", GetSFXVolume());
+        audioMixer.SetFloat("SFX", GetSFXVolume());
+
+        SetCameraSensitivityOnMobileInputSettings(GetCameraSensitivity());
     }
 
     private void SetPlayerPrefsToDefault()
     {
         PlayerPrefs.SetFloat(MUSIC_VOLUME, defaultMusicVolume);
 
-        MainMenu.instance.audioMixer.SetFloat("Music", defaultMusicVolume);
+        audioMixer.SetFloat("Music", defaultMusicVolume);
 
         PlayerPrefs.SetFloat(SFX_VOLUME, defaultSFXVolume);
 
-        MainMenu.instance.audioMixer.SetFloat("SFX", defaultSFXVolume);
+        audioMixer.SetFloat("SFX", defaultSFXVolume);
 
         PlayerPrefs.SetFloat(CAMERA_SENSITIVITY, defaultCameraSensitivity);
     }
@@ -109,6 +115,46 @@ public class GameSession : MonoBehaviour
     public void SetCameraSensitivity(float amount)
     {
         PlayerPrefs.SetFloat(CAMERA_SENSITIVITY, amount);
+    }
+
+    public void ApplySettings()
+    {
+        audioMixer.GetFloat("Music", out float musicVol);
+
+        GameSession.instance.SetMusicVolume(musicVol);
+
+        audioMixer.GetFloat("SFX", out float sfxVol);
+
+        GameSession.instance.SetSFXVolume(sfxVol);
+
+        GameSession.instance.SetCameraSensitivity(bl_MobileInputSettings.Instance.touchPadHorizontalSensitivity);
+    }
+
+    public void CancelSettings()
+    {
+        SetMusicVolume(GetMusicVolume());
+
+        SetSFXVolume(GetSFXVolume());
+
+        SetCameraSensitivity(GetCameraSensitivity());
+    }
+
+
+    public void SetMusicVolumeOnAudioMixer(float amount)
+    {
+        audioMixer.SetFloat("Music", amount);
+    }
+
+    public void SetSFXVolumeOnAudioMixer(float amount)
+    {
+        audioMixer.SetFloat("SFX", amount);
+    }
+
+    public void SetCameraSensitivityOnMobileInputSettings(float amount)
+    {
+        bl_MobileInputSettings.Instance.touchPadHorizontalSensitivity = amount;
+
+        bl_MobileInputSettings.Instance.touchPadVerticalSensitivity = amount;
     }
 
 }
