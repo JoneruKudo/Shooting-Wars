@@ -8339,6 +8339,7 @@ GameObject:
   - component: {fileID: 1552667075}
   - component: {fileID: 1552667077}
   - component: {fileID: 1552667076}
+  - component: {fileID: 1552667078}
   m_Layer: 5
   m_Name: Find Room Screen
   m_TagString: Untagged
@@ -8406,6 +8407,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552667074}
   m_CullTransparentMesh: 1
+--- !u!114 &1552667078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552667074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dec0d16db8ac0b4baac4cca68f4b3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateIntervalSeconds: 1
 --- !u!1 &1560665244
 GameObject:
   m_ObjectHideFlags: 0
@@ -9261,7 +9275,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.0000068386857}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1739908183
 MonoBehaviour:
@@ -9747,6 +9761,7 @@ MonoBehaviour:
   findRoomScreen: {fileID: 1552667074}
   roomFoundObject: {fileID: 8274829942905320906}
   joinButton: {fileID: 3430850506683339713}
+  isRoomBrowserOn: 0
   startGameButton: {fileID: 3430850506982442936}
   errorScreen: {fileID: 495269739}
   errorText: {fileID: 4973926730754359497}
@@ -10843,7 +10858,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 975, y: -150}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513640892528103
 RectTransform:
@@ -10862,7 +10877,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 325, y: -450}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513641173726424
 RectTransform:
@@ -10900,7 +10915,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 975, y: -450}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513641657638103
 RectTransform:
@@ -10938,7 +10953,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 975, y: -50}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513641789761909
 RectTransform:
@@ -10957,7 +10972,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 975, y: -250}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513641861638951
 RectTransform:
@@ -10995,7 +11010,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 975, y: -350}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513642126885129
 RectTransform:
@@ -11071,7 +11086,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 325, y: -150}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513642412853649
 RectTransform:
@@ -11090,7 +11105,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 325, y: -50}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513642416735519
 RectTransform:
@@ -11109,7 +11124,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 325, y: -350}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513642429401227
 RectTransform:
@@ -11147,7 +11162,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 325, y: -250}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 650, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &207513642629818561
 RectTransform:
@@ -13570,7 +13585,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1905164430}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: ReturnToMainMenu
+        m_MethodName: CancelFindRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16337,7 +16352,8 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1905164430}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4794916615828664114, guid: 77e2871b6b4409f46a2e93d07c58e2a0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 77e2871b6b4409f46a2e93d07c58e2a0, type: 3}
 --- !u!114 &4973926729998890213
 MonoBehaviour:

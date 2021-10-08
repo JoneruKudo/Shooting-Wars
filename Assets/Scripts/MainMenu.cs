@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using System;
 using Lovatto.MobileInput;
-
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviourPunCallbacks
 {
@@ -46,6 +46,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public GameObject joinButton;
     private string selectedButtonRoomName;
     private List<RoomButton> roomButtons = new List<RoomButton>();
+    public bool isRoomBrowserOn = false;
 
     public GameObject startGameButton;
 
@@ -122,11 +123,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
+        CloseAllScreen();
+
         if (string.IsNullOrEmpty(GameSession.instance.GetPlayerName()))
         {
-            CloseAllScreen();
-
             setPlayerNameScreen.SetActive(true);
+        }
+        else if (isRoomBrowserOn)
+        {
+            isRoomBrowserOn = false;
+            findRoomScreen.SetActive(true);
         }
         else
         {
@@ -168,8 +174,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
     }
 
     public void LeaveRoom()
-    {
+    {   
         if (!PhotonNetwork.InRoom) return;
+
+        isRoomBrowserOn = false;
 
         PhotonNetwork.LeaveRoom();
 
@@ -180,27 +188,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
         loadingText.text = "Leaving room...";
     }
 
-    public override void OnCreatedRoom()
+    public override void OnLeftRoom()
     {
         CloseAllScreen();
 
-        lobbyScreen.SetActive(true);
-
-        lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
-
-        maxKillsText.text = "Max Kills : " + GameSession.instance.maxKill.ToString();
-
-        matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
-
-        startGameButton.GetComponent<Button>().interactable = false;
-
-        UpdatePlayersNameInLobby();
-
-        if (isTestingMode && isQuickStart)
-        {
-            isQuickStart = false;
-            StartGame();
-        }
+        ReturnToMainMenu();
     }
 
     public void StartGame()
@@ -238,6 +230,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(selectedButtonRoomName);
+
+        CloseAllScreen();
+
+        loadingText.text = "Joining room...";
+
+        loadingScreen.SetActive(true);
     }
 
     public override void OnJoinedRoom()
@@ -262,6 +260,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
 
         UpdatePlayersNameInLobby();
+
+        if (isTestingMode && isQuickStart)
+        {
+            isQuickStart = false;
+            StartGame();
+        }
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -282,7 +286,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            if (PhotonNetwork.CurrentRoom.PlayerCount > 0) // can put how many players before starting a match
             {
                 startGameButton.GetComponent<Button>().interactable = true;
             }
@@ -346,11 +350,28 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void FindRoom()
     {
+        isRoomBrowserOn = true;
+
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+
         CloseAllScreen();
 
         findRoomScreen.SetActive(true);
 
         joinButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void CancelFindRoom()
+    {
+        ReturnToMainMenu();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -386,8 +407,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) // this is called only on join and left lobby
-    {  
-       foreach(RoomButton roomButton in roomButtons)
+    {
+        foreach (RoomButton roomButton in roomButtons)
         {
             Destroy(roomButton.gameObject);
         }

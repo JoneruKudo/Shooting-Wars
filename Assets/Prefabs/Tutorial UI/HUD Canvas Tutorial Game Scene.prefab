@@ -2367,7 +2367,6 @@ GameObject:
   - component: {fileID: 2063157986804875146}
   - component: {fileID: 2174850813727306640}
   - component: {fileID: 2174424718499926344}
-  - component: {fileID: 2286435514616336263}
   m_Layer: 5
   m_Name: Mobile Control [Dark] 1
   m_TagString: Untagged
@@ -2456,25 +2455,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2286435514616336263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2286435514616336264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89bbd0685046e9a40845bf090102b8c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
-  fillBarMethod: 1
-  roundProgressBy: 10
-  detectionTags:
-  - Enemy
-  waitProgressUI: {fileID: 2287065960926226690}
-  waitProgressBar: {fileID: 2174894424222770850}
 --- !u!1 &2286493779034803200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2486,7 +2466,6 @@ GameObject:
   - component: {fileID: 2064129001531396062}
   - component: {fileID: 2066613862953142980}
   - component: {fileID: 2175192786861509384}
-  - component: {fileID: 1004607663563077497}
   m_Layer: 5
   m_Name: '>'
   m_TagString: Untagged
@@ -2552,72 +2531,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607663563077497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2286493779034803200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0408a437830a3340ac495023aa5579f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 1
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2175192786861509384}
-  animatedChild: {fileID: 5522821319590002475}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  touchColor: {r: 1, g: 1, b: 1, a: 0.08627451}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2286741486392134762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2627,7 +2540,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2064188131616681586}
-  - component: {fileID: 1004607661806532992}
   m_Layer: 5
   m_Name: Slot Switcher
   m_TagString: Untagged
@@ -2663,29 +2575,6 @@ RectTransform:
   m_AnchoredPosition: {x: -214.29999, y: 6.799988}
   m_SizeDelta: {x: 140, y: 40}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &1004607661806532992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2286741486392134762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7ef53637b840049be8279f485722a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numberOfSlots: 3
-  PreviewImage: {fileID: 2170932877464908482}
-  WeaponNameText: {fileID: 1004607661838176462}
-  AmmoText: {fileID: 1004607663449184879}
-  slotsData:
-  - ItemName: M4 Rifle
-    Icon: {fileID: 21300046, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
-  - ItemName: Machine Gun
-    Icon: {fileID: 21300000, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
-  - ItemName: Sniper
-    Icon: {fileID: 21300034, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
 --- !u!1 &2286907996190782112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,7 +2661,6 @@ GameObject:
   - component: {fileID: 2063922810141780436}
   - component: {fileID: 2066630805128349750}
   - component: {fileID: 2175080823590700118}
-  - component: {fileID: 1004607662510388133}
   m_Layer: 5
   m_Name: Fire
   m_TagString: Untagged
@@ -2838,73 +2726,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607662510388133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2286988522771067820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f92fb4d70c8fb264c9a0d95de6a5ba42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 0
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2175080823590700118}
-  - {fileID: 5633085348877134511}
-  animatedChild: {fileID: 5522850836506340153}
-  normalColor: {r: 1, g: 1, b: 1, a: 0.7294118}
-  touchColor: {r: 0.20784314, g: 0.8156863, b: 0.7294118, a: 1}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2286989260646388958
 GameObject:
   m_ObjectHideFlags: 0
@@ -3066,7 +2887,6 @@ GameObject:
   - component: {fileID: 2064340931514708480}
   - component: {fileID: 2066748882295912384}
   - component: {fileID: 2174407865345055270}
-  - component: {fileID: 1004607662886540113}
   m_Layer: 5
   m_Name: <
   m_TagString: Untagged
@@ -3132,72 +2952,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607662886540113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287063004078892868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34348ea20012576499a91e6088266afd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 1
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2174407865345055270}
-  animatedChild: {fileID: 2063869876018945654}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  touchColor: {r: 1, g: 1, b: 1, a: 0.08627451}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2287065960926226690
 GameObject:
   m_ObjectHideFlags: 0
@@ -3285,7 +3039,6 @@ GameObject:
   - component: {fileID: 2064794925060910018}
   - component: {fileID: 2066322423658236396}
   - component: {fileID: 2174718752086792500}
-  - component: {fileID: 1004607662074542060}
   m_Layer: 5
   m_Name: Aim
   m_TagString: Untagged
@@ -3351,73 +3104,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607662074542060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287159344631485496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f93451df3c13bfb4c9aaafa319ddbb7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 0
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2174718752086792500}
-  - {fileID: 5633908081634914477}
-  animatedChild: {fileID: 5523418927411639337}
-  normalColor: {r: 1, g: 1, b: 1, a: 0.7294118}
-  touchColor: {r: 0.20784314, g: 0.8156863, b: 0.7294118, a: 1}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2287202105419601248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3429,7 +3115,6 @@ GameObject:
   - component: {fileID: 2063534972200132450}
   - component: {fileID: 2067053047309361884}
   - component: {fileID: 2174421104782158852}
-  - component: {fileID: 2287202105419601567}
   m_Layer: 5
   m_Name: Crouch
   m_TagString: Untagged
@@ -3495,73 +3180,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2287202105419601567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287202105419601248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 549d57b9eaa44e84ea235bbbc257c666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: Crouch
-  fallBackKey: 99
-  blockTouchPad: 1
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2174421104782158852}
-  - {fileID: 5633079321915231393}
-  animatedChild: {fileID: 5523192088840386943}
-  normalColor: {r: 1, g: 1, b: 1, a: 0.7294118}
-  touchColor: {r: 0.20784314, g: 0.8156863, b: 0.7294118, a: 1}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2287205508586993468
 GameObject:
   m_ObjectHideFlags: 0
@@ -3623,7 +3241,6 @@ GameObject:
   - component: {fileID: 2064836526620152972}
   - component: {fileID: 2062860133461052838}
   - component: {fileID: 2175011529837262994}
-  - component: {fileID: 1004607663625738310}
   m_Layer: 5
   m_Name: Reload
   m_TagString: Untagged
@@ -3689,73 +3306,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607663625738310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287272422373761172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e29fd650df234be4f8324eb7b4f22634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 0
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2175011529837262994}
-  - {fileID: 5633542606457500063}
-  animatedChild: {fileID: 5523408251155139807}
-  normalColor: {r: 1, g: 1, b: 1, a: 0.7294118}
-  touchColor: {r: 0.20784314, g: 0.8156863, b: 0.7294118, a: 1}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2287452460692947256
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,7 +3317,6 @@ GameObject:
   - component: {fileID: 2064218099226075452}
   - component: {fileID: 2067066449287754292}
   - component: {fileID: 2174923453794997696}
-  - component: {fileID: 1004607663203827351}
   m_Layer: 5
   m_Name: Jump
   m_TagString: Untagged
@@ -3833,73 +3382,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1004607663203827351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287452460692947256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f93c4a10dd69577478e366b415348f03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonName: 
-  fallBackKey: 0
-  blockTouchPad: 1
-  onClick:
-    m_PersistentCalls:
-      m_Calls: []
-  buttonGraphics:
-  - {fileID: 2174923453794997696}
-  - {fileID: 5633081032576706699}
-  animatedChild: {fileID: 5522630582551225919}
-  normalColor: {r: 1, g: 1, b: 1, a: 0.7294118}
-  touchColor: {r: 0.20784314, g: 0.8156863, b: 0.7294118, a: 1}
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.1478031
-      value: 0.9610531
-      inSlope: 0.0748267
-      outSlope: 0.0748267
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.23799145
-    - serializedVersion: 3
-      time: 0.88634044
-      value: 1.3343837
-      inSlope: -0.029873513
-      outSlope: -0.029873513
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.0041667
-      value: 1.25
-      inSlope: -0.17678799
-      outSlope: -0.17678799
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17842318
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  transitionDuration: 0.25
 --- !u!1 &2581523996379672754
 GameObject:
   m_ObjectHideFlags: 0
@@ -7837,9 +7319,6 @@ GameObject:
   - component: {fileID: 6785069654097188049}
   - component: {fileID: 6785069654097188052}
   - component: {fileID: 6785069654097188051}
-  - component: {fileID: 6785069654097188050}
-  - component: {fileID: 6785069654097188053}
-  - component: {fileID: 6785069654097188054}
   m_Layer: 5
   m_Name: Area Joystick
   m_TagString: Untagged
@@ -7905,106 +7384,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6785069654097188050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6785069654097188048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0925dc81375e61947926e5155461f52e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SmoothReturn: 1
-  stickArea: 1
-  idleColor: {r: 1, g: 1, b: 1, a: 0.05882353}
-  activeColor: {r: 1, g: 1, b: 1, a: 0.59607846}
-  Duration: 0.25
-  joystickRoot: {fileID: 6785069652975862664}
-  StickRect: {fileID: 6785069654425496801}
-  areaTransform: {fileID: 6785069654097188049}
---- !u!114 &6785069654097188053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6785069654097188048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a686f97b7cc694d46baf17f7e33dbda2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RunningOnMagnitudeOf: 0.92
-  runningIconScale:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.0062229596
-      outSlope: -0.0062229596
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 0.17870943
-      value: 0
-      inSlope: 0.0067322277
-      outSlope: 0.0067322277
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 0.20057507
-      value: 0.5
-      inSlope: 1.0178479
-      outSlope: 1.0178479
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.95
-      value: 1.0041409
-      inSlope: 1.0061322
-      outSlope: 1.0061322
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1
-      value: 1.25
-      inSlope: 0.21496817
-      outSlope: 0.21496817
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.21114093
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  sourceJoystick: {fileID: 6785069654097188050}
-  runningIndicator: {fileID: 8362824072502073648}
-  stickTransform: {fileID: 6785069654425496801}
-  runningAlpha: {fileID: 8362824072502073661}
---- !u!114 &6785069654097188054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6785069654097188048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9a1e4cfc9ebf74439bab90d514f5cab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6785069654425496800
 GameObject:
   m_ObjectHideFlags: 0
