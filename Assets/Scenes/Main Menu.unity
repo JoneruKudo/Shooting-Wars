@@ -9765,7 +9765,7 @@ MonoBehaviour:
   startGameButton: {fileID: 3430850506982442936}
   errorScreen: {fileID: 495269739}
   errorText: {fileID: 4973926730754359497}
-  mapNameToLoad: Sandbox
+  mapNameToLoad: Game Map
   playerNames:
   - {fileID: 4973926730855283837}
   - {fileID: 4973926730701830949}

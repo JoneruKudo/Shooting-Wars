@@ -477,8 +477,8 @@ MonoBehaviour:
   camPointWhenDead: {fileID: 5176303824774093849}
   movementSpeed: 10
   charController: {fileID: 5336235246039129483}
-  jumpHeight: 3.25
-  gravityMultiplier: 1
+  jumpHeight: 2
+  gravityMultiplier: 0.8
   groundPoint: {fileID: 5336235247642044738}
   groundLayer:
     serializedVersion: 2
