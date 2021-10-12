@@ -8,8 +8,6 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using System;
 using Lovatto.MobileInput;
-using UnityEngine.SceneManagement;
-
 public class MainMenu : MonoBehaviourPunCallbacks
 {
     public static MainMenu instance;
@@ -197,6 +195,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        CloseAllScreen();
+
+        loadingScreen.SetActive(true);
+
+        loadingText.text = "Entering battlefield...";
+
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
         PhotonNetwork.LoadLevel(mapNameToLoad);

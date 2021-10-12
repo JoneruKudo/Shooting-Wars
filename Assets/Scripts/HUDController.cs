@@ -344,6 +344,6 @@ public class HUDController : MonoBehaviour
 
         PhotonNetwork.LeaveLobby();
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Main Menu");
     }
 }

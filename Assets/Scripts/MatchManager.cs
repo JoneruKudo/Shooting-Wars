@@ -40,7 +40,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (!PhotonNetwork.IsConnected && SceneManager.GetActiveScene().buildIndex != 0)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("Main Menu");
         }
         else
         { 

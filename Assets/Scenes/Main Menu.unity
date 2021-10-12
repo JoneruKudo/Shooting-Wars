@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1368326496}
-  m_IndirectSpecularColor: {r: 0.46976417, g: 0.6209998, b: 0.7787175, a: 1}
+  m_IndirectSpecularColor: {r: 0.46979433, g: 0.62100583, b: 0.7787391, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9745,7 +9745,7 @@ MonoBehaviour:
   tutorialCanvas: {fileID: 1499887969789315033}
   cameraPositionInMainMenu: {fileID: 1942959692}
   cameraPositionInTutorial: {fileID: 939489924}
-  isTestingMode: 1
+  isTestingMode: 0
   testButtons: {fileID: 718936224}
   mainMenuScreen: {fileID: 1641903391}
   loadingScreen: {fileID: 1902146448}

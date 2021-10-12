@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRoomName: 
   matchTimeDuration: 5
-  maxKill: 2
+  maxKill: 10
   defaultMusicVolume: -60
   defaultSFXVolume: -60
   defaultCameraSensitivity: 20
