@@ -296,6 +296,20 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             MatchEndSend(playerWon, false);
         }
     }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        foreach (PlayerInfo player in allPlayers)
+        {
+            if (player.name == otherPlayer.NickName)
+            {
+                allPlayers.Remove(player);
+                break;
+            }
+        }
+
+        PlayerListSend();
+    }
 }
 
 public class PlayerInfo
