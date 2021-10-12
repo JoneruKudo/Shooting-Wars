@@ -250,7 +250,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         lobbyRoomNameText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
 
-        maxKillsText.text = "Max Kills : " + GameSession.instance.maxKill.ToString();
+        maxKillsText.text = "Max Kill To Win : " + GameSession.instance.maxKill.ToString();
 
         matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
 
