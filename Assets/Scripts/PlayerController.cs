@@ -631,6 +631,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             MatchManager.instance.UpdatePlayerInfoSend(damager, 0, 1);
 
             PhotonNetwork.Instantiate(deathSFX.name, transform.position, Quaternion.identity);
+
+            HUDController.instance.ShowWarningText("You're killed by "+ damager, 2f, Color.red);
         }
 
         HUDController.instance.healthText.text = currentHealthPoints.ToString();

@@ -197,6 +197,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     case 0: // statType = 0 for kills
                         playerInfo.kills += amount;
+                            if (playerName == PhotonNetwork.NickName)
+                            {
+                                HUDController.instance.ShowWarningText("You killed an Enemy.", 2f, Color.green);
+                            }
                         break;
                     case 1: // statType = 1 for deaths
                         playerInfo.deaths += amount;
