@@ -15,6 +15,8 @@ public class HUDController : MonoBehaviour
         instance = this;
     }
 
+    public GameObject touchBlockerPanel;
+
     public GameObject crossHairImage;
 
     public GameObject tutorialCanvas;

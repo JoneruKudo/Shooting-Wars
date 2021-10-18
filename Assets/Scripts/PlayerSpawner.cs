@@ -61,7 +61,7 @@ public class PlayerSpawner : MonoBehaviour
 
         HUDController.instance.respawningPanel.SetActive(true);
 
-        HUDController.instance.playerControllerUI.SetActive(false);
+        HUDController.instance.touchBlockerPanel.SetActive(true);
 
         isDead = true;
 
@@ -100,7 +100,7 @@ public class PlayerSpawner : MonoBehaviour
 
         HUDController.instance.respawningPanel.SetActive(false);
 
-        HUDController.instance.playerControllerUI.SetActive(true);
+        HUDController.instance.touchBlockerPanel.SetActive(false);
 
         spawnIndex = Random.Range(0, spawnPoints.Length);
         
