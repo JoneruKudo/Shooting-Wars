@@ -17,10 +17,10 @@ public class GameSession : MonoBehaviour
     public float defaultSFXVolume;
     public float defaultCameraSensitivity; 
 
-    private static string PLAYER_NAME = "Player Name";
-    private static string MUSIC_VOLUME = "Music Volume";
-    private static string SFX_VOLUME = "SFX Volume";
-    private static string CAMERA_SENSITIVITY = "Camera Sensitivity";
+    private const string PLAYER_NAME = "Player Name";
+    private const string MUSIC_VOLUME = "Music Volume";
+    private const string SFX_VOLUME = "SFX Volume";
+    private const string CAMERA_SENSITIVITY = "Camera Sensitivity";
 
     public AudioMixer audioMixer;
 

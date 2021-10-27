@@ -463,6 +463,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void ApplySettings()
     {
+        loadingScreen.SetActive(true);
+
+        loadingText.text = "Applying settings...";
+
         if (!string.IsNullOrEmpty(newPlayerNameInputField.text))
         {
             GameSession.instance.SetPlayerName(newPlayerNameInputField.text);
