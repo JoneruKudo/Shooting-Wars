@@ -108,6 +108,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         settingsScreen.SetActive(false);
         setPlayerNameScreen.SetActive(false);
         tutorialCanvas.SetActive(false);
+
+        AdManager.instance.CloseBannerAd();
     }
 
     public override void OnConnectedToMaster()
@@ -253,6 +255,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         maxKillsText.text = "Max Kill To Win : " + GameSession.instance.maxKill.ToString();
 
         matchDurationText.text = "Match Duration : " + GameSession.instance.matchTimeDuration.ToString() + " Mins";
+
+        AdManager.instance.ShowBannerAd();
 
         if (PhotonNetwork.IsMasterClient)
         {
